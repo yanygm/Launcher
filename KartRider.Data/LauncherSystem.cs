@@ -13,7 +13,6 @@ namespace KartRider
 			{
 				p.Kill();
 			}
-			Environment.Exit(1);
 		}
 
 		public static void MessageBoxType2()
@@ -24,7 +23,6 @@ namespace KartRider
 			{
 				p.Kill();
 			}
-			Environment.Exit(1);
 		}
 
 		public static void MessageBoxType3()
