@@ -222,8 +222,7 @@ namespace ExcData
 								{
 									oPacket.WriteShort(id);
 									oPacket.WriteShort(sn);
-									oPacket.WriteShort(0);
-									oPacket.WriteHexString("FF FF 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00");
+									oPacket.WriteHexString("00 00 FF FF 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00");
 								}
 							}
 						}
@@ -232,8 +231,7 @@ namespace ExcData
 					{
 						oPacket.WriteShort(id);
 						oPacket.WriteShort(sn);
-						oPacket.WriteShort(0);
-						oPacket.WriteHexString("FF FF 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00");
+						oPacket.WriteHexString("00 00 FF FF 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00");
 					}
 				}
 				oPacket.WriteInt(0);
