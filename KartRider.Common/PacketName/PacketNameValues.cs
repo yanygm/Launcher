@@ -1551,5 +1551,8 @@ namespace KartRider_PacketName
 		PrUnLockedItem = 667747686,
 		PqTcCashEventUserInfoPacket = 2415659644,
 		PrTcCashEventUserInfoPacket = 2417363581,
+		PqMissionAttendUserStatePacket = 3103132667,
+		PqMissionAttendNRUserStatePacket = 3477736603,
+		PqQuestUX2ndForShutDownPacket = 2788231999,
 	}
 }
