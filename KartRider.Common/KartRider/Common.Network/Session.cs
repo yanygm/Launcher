@@ -1,6 +1,7 @@
 using KartRider.Common.Security;
 using KartRider.Common.Utilities;
 using KartRider.IO.Packet;
+using KartRider_PacketName;
 using System;
 using System.Net;
 using System.Net.Sockets;
