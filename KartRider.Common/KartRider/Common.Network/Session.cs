@@ -367,6 +367,8 @@ namespace KartRider.Common.Network
 				Console.WriteLine("Disconnected session 11 {0}", exception.ToString());
 				this.Disconnect();
 			}
+			byte[] packet = pPacket.ToArray();
+			Console.WriteLine((PacketName)BitConverter.ToUInt32(packet, 0) + "：" + BitConverter.ToString(packet).Replace("-", ""));
 		}
 
 		public void SendRaw(byte[] pBuffer)

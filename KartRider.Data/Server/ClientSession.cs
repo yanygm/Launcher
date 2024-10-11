@@ -65,7 +65,7 @@ namespace KartRider
 				uint hash = iPacket.ReadUInt();
 				if (hash != 1950550337)
 				{
-					Console.WriteLine((PacketName)hash);
+					Console.WriteLine((PacketName)hash + "：" + BitConverter.ToString(iPacket.ToArray()).Replace("-", ""));
 				}
 				if ((hash == Adler32Helper.GenerateAdler32(Encoding.ASCII.GetBytes("PcReportRaidOccur"), 0) ? false : hash != 1340475309))//PqGameReportMyBadUdp
 				{
