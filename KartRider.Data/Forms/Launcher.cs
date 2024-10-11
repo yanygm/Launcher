@@ -128,7 +128,6 @@ namespace KartRider
 
 		private void OnFormClosing(object sender, FormClosingEventArgs e)
 		{
-			File.Delete(@"KartRider.xml");
 			if (Process.GetProcessesByName("KartRider").Length != 0)
 			{
 				LauncherSystem.MessageBoxType1();
@@ -200,6 +199,7 @@ namespace KartRider
 						Start_Button.Enabled = true;
 						Launcher.GetKart = true;
 						Launcher.Options = true;
+						File.Delete(@"KartRider.xml");
 					}
 					catch (System.ComponentModel.Win32Exception ex)
 					{
