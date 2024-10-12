@@ -199,7 +199,6 @@ namespace KartRider
 						Start_Button.Enabled = true;
 						Launcher.GetKart = true;
 						Launcher.Options = true;
-						File.Delete(@"KartRider.xml");
 					}
 					catch (System.ComponentModel.Win32Exception ex)
 					{
