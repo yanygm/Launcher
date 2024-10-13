@@ -109,7 +109,7 @@ namespace KartRider
 			{
 				XDocument doc = KartExcData.randomTrack;
 				var speedTrackSets = doc.Descendants("RandomTrackSet")
-						  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "speed");
+						  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "speed" && (string)rts.Attribute("randomType") == "clubSpeed");
 				if (speedTrackSets != null)
 				{
 					Random random = new Random();
