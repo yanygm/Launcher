@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using KartRider.IO.Packet;
 using Set_Data;
 
@@ -9,7 +8,6 @@ namespace KartRider
 	{
 		public static void PcFirstMessage()
 		{
-			File.Delete(@"KartRider.xml");
 			uint first_val = 3595571486;
 			uint second_val = 2168420743;
 			using (OutPacket outPacket = new OutPacket("PcFirstMessage"))

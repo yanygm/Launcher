@@ -2,6 +2,7 @@
 using KartRider.Common.Utilities;
 using KartRider.IO.Packet;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -2068,6 +2069,7 @@ namespace KartRider
 							outPacket.WriteByte(SetRider.IdentificationType);
 							RouterListener.MySession.Client.Send(outPacket);
 						}
+						File.Delete(@"KartRider.xml");
 						return;
 					}
 					else if (hash == Adler32Helper.GenerateAdler32_ASCII("PqSyncJackpotPointCS", 0))
