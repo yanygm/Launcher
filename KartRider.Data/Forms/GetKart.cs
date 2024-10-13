@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using ExcData;
+using System.Linq;
 
 namespace KartRider
 {
@@ -34,7 +35,8 @@ namespace KartRider
 						sn = 1;
 						var itemCode = GetKart.Item_Code;
 						var matchingCount = KartExcData.kart.Count(k => k == itemCode);
-						sn += matchingCount;
+						sn += (short)matchingCount;
+						KartExcData.kart.Add(itemCode);
 						Console.WriteLine("kart: " + GetKart.Item_Code + " sn: " + sn);
 						using (OutPacket outPacket = new OutPacket("PrRequestKartInfoPacket"))
 						{

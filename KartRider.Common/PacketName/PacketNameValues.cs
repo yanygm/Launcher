@@ -1555,5 +1555,7 @@ namespace KartRider_PacketName
 		PqMissionAttendNRUserStatePacket = 3477736603,
 		PqQuestUX2ndForShutDownPacket = 2788231999,
 		PrQuestUX2ndForShutDownPacket = 2790067008,
+		PqMixItemExchangeCount = 1636960426,
+		PrMixItemExchangeCount = 1638795435,
 	}
 }
