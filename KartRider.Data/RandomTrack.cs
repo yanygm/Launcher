@@ -3,6 +3,8 @@ using KartRider.Common.Utilities;
 using ExcData;
 using System.Xml;
 using Set_Data;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace KartRider
 {
@@ -76,211 +78,215 @@ namespace KartRider
 
 		public static void RandomTrackSetList()
 		{
-			Random random = new Random();
 			if (RandomTrack.SetRandomTrack == "allRandom")
 			{
 				if (RandomTrack.GameType == "item")
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("allitem");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
+					XDocument doc = KartExcData.randomTrack;
+					var itemTrackSets = doc.Descendants("RandomTrackSet")
+							  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "item");
+					if (itemTrackSets != null)
+					{
+						Random random = new Random();
+						var randomTrack = itemTrackSets.Descendants("track").ElementAt(random.Next(itemTrackSets.Descendants("track").Count()));
+						RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+					}
 				}
 				else if (RandomTrack.GameType == "speed")
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("allspeed");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
+					XDocument doc = KartExcData.randomTrack;
+					var speedTrackSets = doc.Descendants("RandomTrackSet")
+							  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "speed");
+					if (speedTrackSets != null)
+					{
+						Random random = new Random();
+						var randomTrack = speedTrackSets.Descendants("track").ElementAt(random.Next(speedTrackSets.Descendants("track").Count()));
+						RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+					}
 				}
 			}
 			else if (RandomTrack.SetRandomTrack == "leagueRandom")
 			{
-				XmlDocument doc = new XmlDocument();
-				doc.Load(@"Profile\RandomTrack.xml");
-				XmlNodeList lis = doc.GetElementsByTagName("league");
-				int track = random.Next(0, lis.Count);
-				XmlNode xn = lis[track];
-				XmlElement xe = (XmlElement)xn;
-				RandomTrack.GameTrack = xe.GetAttribute("Track");
+				XDocument doc = KartExcData.randomTrack;
+				var speedTrackSets = doc.Descendants("RandomTrackSet")
+						  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "speed");
+				if (speedTrackSets != null)
+				{
+					Random random = new Random();
+					var randomTrack = speedTrackSets.Descendants("track").ElementAt(random.Next(speedTrackSets.Descendants("track").Count()));
+					RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+				}
 			}
 			else if (RandomTrack.SetRandomTrack == "hot1Random")
 			{
 				if (RandomTrack.GameType == "item")
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("hot1item");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
-
+					XDocument doc = KartExcData.randomTrack;
+					var itemTrackSets = doc.Descendants("RandomTrackSet")
+							  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "item" && (string)rts.Attribute("randomType") == "hot1");
+					if (itemTrackSets != null)
+					{
+						Random random = new Random();
+						var randomTrack = itemTrackSets.Descendants("track").ElementAt(random.Next(itemTrackSets.Descendants("track").Count()));
+						RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+					}
 				}
 				else if (RandomTrack.GameType == "speed")
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("hot1speed");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
+					XDocument doc = KartExcData.randomTrack;
+					var speedTrackSets = doc.Descendants("RandomTrackSet")
+							  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "speed" && (string)rts.Attribute("randomType") == "hot1");
+					if (speedTrackSets != null)
+					{
+						Random random = new Random();
+						var randomTrack = speedTrackSets.Descendants("track").ElementAt(random.Next(speedTrackSets.Descendants("track").Count()));
+						RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+					}
 				}
 			}
 			else if (RandomTrack.SetRandomTrack == "hot2Random")
 			{
 				if (RandomTrack.GameType == "item")
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("hot2item");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
+					XDocument doc = KartExcData.randomTrack;
+					var itemTrackSets = doc.Descendants("RandomTrackSet")
+							  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "item" && (string)rts.Attribute("randomType") == "hot2");
+					if (itemTrackSets != null)
+					{
+						Random random = new Random();
+						var randomTrack = itemTrackSets.Descendants("track").ElementAt(random.Next(itemTrackSets.Descendants("track").Count()));
+						RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+					}
 				}
 				else if (RandomTrack.GameType == "speed")
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("hot2speed");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
+					XDocument doc = KartExcData.randomTrack;
+					var speedTrackSets = doc.Descendants("RandomTrackSet")
+							  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "speed" && (string)rts.Attribute("randomType") == "hot2");
+					if (speedTrackSets != null)
+					{
+						Random random = new Random();
+						var randomTrack = speedTrackSets.Descendants("track").ElementAt(random.Next(speedTrackSets.Descendants("track").Count()));
+						RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+					}
 				}
 			}
 			else if (RandomTrack.SetRandomTrack == "hot3Random")
 			{
 				if (RandomTrack.GameType == "item")
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("hot3item");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
+					XDocument doc = KartExcData.randomTrack;
+					var itemTrackSets = doc.Descendants("RandomTrackSet")
+							  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "item" && (string)rts.Attribute("randomType") == "hot3");
+					if (itemTrackSets != null)
+					{
+						Random random = new Random();
+						var randomTrack = itemTrackSets.Descendants("track").ElementAt(random.Next(itemTrackSets.Descendants("track").Count()));
+						RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+					}
 				}
 				else if (RandomTrack.GameType == "speed")
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("hot3speed");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
+					XDocument doc = KartExcData.randomTrack;
+					var speedTrackSets = doc.Descendants("RandomTrackSet")
+							  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "speed" && (string)rts.Attribute("randomType") == "hot3");
+					if (speedTrackSets != null)
+					{
+						Random random = new Random();
+						var randomTrack = speedTrackSets.Descendants("track").ElementAt(random.Next(speedTrackSets.Descendants("track").Count()));
+						RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+					}
 				}
 			}
 			else if (RandomTrack.SetRandomTrack == "hot4Random")
 			{
 				if (RandomTrack.GameType == "item")
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("hot4item");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
+					XDocument doc = KartExcData.randomTrack;
+					var itemTrackSets = doc.Descendants("RandomTrackSet")
+							  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "item" && (string)rts.Attribute("randomType") == "hot4");
+					if (itemTrackSets != null)
+					{
+						Random random = new Random();
+						var randomTrack = itemTrackSets.Descendants("track").ElementAt(random.Next(itemTrackSets.Descendants("track").Count()));
+						RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+					}
 				}
 				else if (RandomTrack.GameType == "speed")
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("hot4speed");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
+					XDocument doc = KartExcData.randomTrack;
+					var speedTrackSets = doc.Descendants("RandomTrackSet")
+							  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "speed" && (string)rts.Attribute("randomType") == "hot4");
+					if (speedTrackSets != null)
+					{
+						Random random = new Random();
+						var randomTrack = speedTrackSets.Descendants("track").ElementAt(random.Next(speedTrackSets.Descendants("track").Count()));
+						RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+					}
 				}
 			}
 			else if (RandomTrack.SetRandomTrack == "hot5Random")
 			{
 				if (RandomTrack.GameType == "item")
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("hot5item");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
+					XDocument doc = KartExcData.randomTrack;
+					var itemTrackSets = doc.Descendants("RandomTrackSet")
+							  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "item" && (string)rts.Attribute("randomType") == "hot5");
+					if (itemTrackSets != null)
+					{
+						Random random = new Random();
+						var randomTrack = itemTrackSets.Descendants("track").ElementAt(random.Next(itemTrackSets.Descendants("track").Count()));
+						RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+					}
 				}
 				else if (RandomTrack.GameType == "speed")
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("hot5speed");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
+					XDocument doc = KartExcData.randomTrack;
+					var speedTrackSets = doc.Descendants("RandomTrackSet")
+							  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "speed" && (string)rts.Attribute("randomType") == "hot5");
+					if (speedTrackSets != null)
+					{
+						Random random = new Random();
+						var randomTrack = speedTrackSets.Descendants("track").ElementAt(random.Next(speedTrackSets.Descendants("track").Count()));
+						RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+					}
 				}
 			}
 			else if (RandomTrack.SetRandomTrack == "newRandom")
 			{
-				if (RandomTrack.GameType == "item")
+				XDocument doc = KartExcData.randomTrack;
+				var itemTrackSets = doc.Descendants("RandomTrackList")
+						  .FirstOrDefault(rts => (string)rts.Attribute("randomType") == "new");
+				if (itemTrackSets != null)
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("newitem");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
-				}
-				else if (RandomTrack.GameType == "speed")
-				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("newspeed");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
+					Random random = new Random();
+					var randomTrack = itemTrackSets.Descendants("track").ElementAt(random.Next(itemTrackSets.Descendants("track").Count()));
+					RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
 				}
 			}
 			else if (RandomTrack.SetRandomTrack == "reverseRandom")
 			{
-				if (RandomTrack.GameType == "item")
+				XDocument doc = KartExcData.randomTrack;
+				var reverseTrackSets = doc.Descendants("RandomTrackList")
+						  .FirstOrDefault(rts => (string)rts.Attribute("randomType") == "reverse");
+				if (reverseTrackSets != null)
 				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("reverseitem");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
-				}
-				else if (RandomTrack.GameType == "speed")
-				{
-					XmlDocument doc = new XmlDocument();
-					doc.Load(@"Profile\RandomTrack.xml");
-					XmlNodeList lis = doc.GetElementsByTagName("reversespeed");
-					int track = random.Next(0, lis.Count);
-					XmlNode xn = lis[track];
-					XmlElement xe = (XmlElement)xn;
-					RandomTrack.GameTrack = xe.GetAttribute("Track");
+					Random random = new Random();
+					var randomTrack = reverseTrackSets.Descendants("track").ElementAt(random.Next(reverseTrackSets.Descendants("track").Count()));
+					RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
 				}
 			}
 			else if (RandomTrack.SetRandomTrack == "speedAllRandom")
 			{
-				XmlDocument doc = new XmlDocument();
-				doc.Load(@"Profile\RandomTrack.xml");
-				XmlNodeList lis = doc.GetElementsByTagName("speedAll");
-				int track = random.Next(0, lis.Count);
-				XmlNode xn = lis[track];
-				XmlElement xe = (XmlElement)xn;
-				RandomTrack.GameTrack = xe.GetAttribute("Track");
+				XDocument doc = KartExcData.randomTrack;
+				var speedTrackSets = doc.Descendants("RandomTrackSet")
+						  .FirstOrDefault(rts => (string)rts.Attribute("gameType") == "speed" && (string)rts.Attribute("randomType") == "clubSpeed");
+				if (speedTrackSets != null)
+				{
+					Random random = new Random();
+					var randomTrack = speedTrackSets.Descendants("track").ElementAt(random.Next(speedTrackSets.Descendants("track").Count()));
+					RandomTrack.GameTrack = (string)randomTrack.Attribute("id");
+				}
 			}
 			if (RandomTrack.SetRandomTrack != "Unknown")
 			{

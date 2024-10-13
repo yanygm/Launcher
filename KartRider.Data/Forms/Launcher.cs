@@ -145,14 +145,6 @@ namespace KartRider
 			}
 			if (File.Exists(Launcher.KartRider) || File.Exists(@"KartRider.pin"))
 			{
-   				if (!(File.Exists(@"Profile\RandomTrack.xml")))
-				{
-					string RandomTrack = Resources.RandomTrack;
-					using (StreamWriter streamWriter = new StreamWriter(@"Profile\RandomTrack.xml", false))
-					{
-						streamWriter.Write(RandomTrack);
-					}
-				}
 				rho5.Main(@".\Data\");
 				KartRhoFile.Main(@".\Data\");
 				Load_KartExcData();

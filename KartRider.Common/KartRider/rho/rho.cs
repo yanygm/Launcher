@@ -128,17 +128,33 @@ namespace RHOParser
 		{
 			if (data.PackageType == "PackFolder")
 			{
-				if(data.PackageDataProp["name"] == "KartRider" || data.PackageDataProp["name"] == "flyingPet")
+				if(data.PackageDataProp["name"] == "KartRider")
 				{
 					foreach (PackageData subPackage in data.SubPackages)
-						Dump(subPackage, currentPath + Path.DirectorySeparatorChar.ToString() + subPackage.PackageDataProp["name"], args);
+					{
+						if (subPackage.PackageDataProp["name"] == "flyingPet")
+						{
+							foreach (PackageData flyingPet in subPackage.SubPackages)
+							{
+								Dump(flyingPet, currentPath + Path.DirectorySeparatorChar.ToString() + flyingPet.PackageDataProp["name"], args);
+							}
+						}
+						if (subPackage.PackageDataProp["name"] == "track")
+						{
+							foreach (PackageData track in subPackage.SubPackages)
+							{
+								if (track.PackageDataProp["name"] == "common")
+								{
+									Dump(track, currentPath + Path.DirectorySeparatorChar.ToString() + track.PackageDataProp["name"], args);
+								}
+							}
+						}
+					}
 				}
 			}
 			else
 			{
 				if (!(data.PackageType == "RhoFolder"))
-					return;
-				if (data.PackageDataProp["name"] == "stuff2" || data.PackageDataProp["name"] == "gui" || data.PackageDataProp["name"] == "track" || data.PackageDataProp["name"] == "sound" || data.PackageDataProp["name"] == "character" || data.PackageDataProp["name"] == "dialog2" || data.PackageDataProp["name"] == "theme" || data.PackageDataProp["name"] == "stage" || data.PackageDataProp["name"] == "zeta" || data.PackageDataProp["name"] == "pet" || data.PackageDataProp["name"] == "trackThumb" || data.PackageDataProp["name"] == "boss" || data.PackageDataProp["name"] == "dialog" || data.PackageDataProp["name"] == "item" || data.PackageDataProp["name"] == "myRoom" || data.PackageDataProp["name"] == "effect" || data.PackageDataProp["name"] == "stuff")
 					return;
 				string path = data.PackageDataProp["fileName"];
 				string str1 = data.PackageDataProp["name"];
@@ -256,6 +272,20 @@ namespace RHOParser
 					Array.Copy((Array)sourceArray, 0, (Array)numArray, destinationIndex, sourceArray.Length);
 					destinationIndex += rhoBlock.OriginalSize;
 					++key2;
+				}
+				if (keyValuePair.Key == "randomTrack@cn.bml")
+				{
+					BinaryXmlDocument bxd = new BinaryXmlDocument();
+					bxd.Read(Encoding.GetEncoding("UTF-16"), numArray);
+					string output = bxd.RootTag.ToString();
+					byte[] output_data = Encoding.GetEncoding("UTF-16").GetBytes(output);
+					string[] parts = dirname.Split(@"\");
+					string lastPart = parts[parts.Length - 1];
+					Console.WriteLine(Path.Combine(dirname.Replace("DataRaw\\", ""), keyValuePair.Key));
+					using (MemoryStream stream = new MemoryStream(output_data))
+					{
+						KartExcData.randomTrack = XDocument.Load(stream);
+					}
 				}
 				if (keyValuePair.Key == "param@cn.bml")
 				{

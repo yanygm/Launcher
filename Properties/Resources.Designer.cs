@@ -11,7 +11,6 @@
 namespace LauncherFile.Properties {
 	using System;
 
-
 	/// <summary>
 	///   一个强类型的资源类，用于查找本地化的字符串等。
 	/// </summary>
@@ -60,12 +59,6 @@ namespace LauncherFile.Properties {
 			}
 		}
 		
-		public static string RandomTrack {
-			get {
-				return ResourceManager.GetString("RandomTrack", resourceCulture);
-			}
-		}
-
 		public static System.Drawing.Icon icon
 		{
 			get

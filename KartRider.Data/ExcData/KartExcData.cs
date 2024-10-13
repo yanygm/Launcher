@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.JavaScript;
 using System.Xml;
+using System.Xml.Linq;
 using KartRider;
 using KartRider.IO.Packet;
 
@@ -22,6 +23,7 @@ namespace ExcData
 		public static Dictionary<int, string> flyingName = new Dictionary<int, string>();
 		public static Dictionary<string, XmlDocument> flyingSpec = new Dictionary<string, XmlDocument>();
 
+		public static XDocument randomTrack = new XDocument();
 		public static List<short> emblem = new List<short>();
 		public static List<short> dictionary = new List<short>();
 
