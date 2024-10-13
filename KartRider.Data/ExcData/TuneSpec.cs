@@ -144,16 +144,10 @@ namespace ExcData
 
 		public static void Use_TuneSpec(short Set_Kart, short Set_KartSN)
 		{
-			int select = -1;
-			for (var i = 0; i < KartExcData.TuneList.Count; i++)
-			{
-				if (KartExcData.TuneList[i][0] == Set_Kart && KartExcData.TuneList[i][1] == Set_KartSN)
-				{
-					select = i;
-					break;
-				}
-			}
-			if (select > -1)
+			var kartAndSN = new { Kart = Set_Kart, SN = Set_KartSN };
+			var tuneList = KartExcData.TuneList;
+			var existingTune = tuneList.FirstOrDefault(list => list[0] == kartAndSN.Kart && list[1] == kartAndSN.SN);
+			if (existingTune!= null)
 			{
 				if (KartExcData.TuneList[select][2] == 103 || KartExcData.TuneList[select][3] == 103 || KartExcData.TuneList[select][4] == 103)
 				{
@@ -200,16 +194,10 @@ namespace ExcData
 
 		public static void Use_PlantSpec(short Set_Kart, short Set_KartSN)
 		{
-			int select = -1;
-			for (var i = 0; i < KartExcData.PlantList.Count; i++)
-			{
-				if (KartExcData.PlantList[i][0] == Set_Kart && KartExcData.PlantList[i][1] == Set_KartSN)
-				{
-					select = i;
-					break;
-				}
-			}
-			if (select > -1)
+			var kartAndSN = new { Kart = Set_Kart, SN = Set_KartSN };
+			var plantList = KartExcData.PlantList;
+			var existingPlant = plantList.FirstOrDefault(list => list[0] == kartAndSN.Kart && list[1] == kartAndSN.SN);
+			if (existingPlant!= null)
 			{
 				if (KartExcData.PlantList[select][2] == 43)
 				{
@@ -1082,16 +1070,10 @@ namespace ExcData
 
 		public static void Use_KartLevelSpec(short Set_Kart, short Set_KartSN)
 		{
-			int select = -1;
-			for (var i = 0; i < KartExcData.LevelList.Count; i++)
-			{
-				if (KartExcData.LevelList[i][0] == Set_Kart && KartExcData.LevelList[i][1] == Set_KartSN)
-				{
-					select = i;
-					break;
-				}
-			}
-			if (select > -1)
+			var kartAndSN = new { Kart = Set_Kart, SN = Set_KartSN };
+			var levelList = KartExcData.LevelList;
+			var existingLevel = levelList.FirstOrDefault(list => list[0] == kartAndSN.Kart && list[1] == kartAndSN.SN);
+			if (existingLevel!= null)
 			{
 				if (KartExcData.LevelList[select][4] == 0)
 				{
@@ -1333,16 +1315,10 @@ namespace ExcData
 
 		public static void Use_PartsSpec(short id, short sn)
 		{
-			int select = -1;
-			for (var i = 0; i < KartExcData.PartsList.Count; i++)
-			{
-				if (KartExcData.PartsList[i][0] == id && KartExcData.PartsList[i][1] == sn)
-				{
-					select = i;
-					break;
-				}
-			}
-			if (select > -1)
+			var kartAndSN = new { Id = id, Sn = sn };
+			var partsList = KartExcData.PartsList;
+			var existingParts = partsList.FirstOrDefault(list => list[0] == kartAndSN.Id && list[1] == kartAndSN.Sn);
+			if (existingParts!= null)
 			{
 				for (short i = 63; i < 67; i++)
 				{

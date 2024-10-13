@@ -32,16 +32,10 @@ namespace KartRider
 					if (GetKart.Item_Type == 3)
 					{
 						sn = 1;
-						for (int i = 0; i < KartExcData.kart.Count; i++)
-						{
-							if (KartExcData.kart[i] == GetKart.Item_Code)
-							{
-								sn += 1;
-							}
-						}
-						Console.WriteLine("sn : " + sn);
-						KartExcData.kart.Add(GetKart.Item_Code);
-						KartExcData.AddPartsList(GetKart.Item_Code, sn, 63, 0, 0, 0);
+						var itemCode = GetKart.Item_Code;
+						var matchingCount = KartExcData.kart.Count(k => k == itemCode);
+						sn += matchingCount;
+						Console.WriteLine("kart: " + GetKart.Item_Code + " sn: " + sn);
 						using (OutPacket outPacket = new OutPacket("PrRequestKartInfoPacket"))
 						{
 							outPacket.WriteByte(1);

@@ -7,6 +7,7 @@ using ExcData;
 using Set_Data;
 using System.Xml;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Linq;
 
 namespace RiderData
 {
@@ -100,21 +101,15 @@ namespace RiderData
 				oPacket.WriteShort(SetRiderItem.Set_RidColor);
 				oPacket.WriteShort(SetRiderItem.Set_BonusCard);
 				oPacket.WriteShort(0);
-				int Plant = -1;
-				for (var i = 0; i < KartExcData.PlantList.Count; i++)
+				var PlantKartAndSN = new { Kart = SetRiderItem.Set_Kart, SN = SetRiderItem.Set_KartSN };
+				var plantList = KartExcData.PlantList;
+				var existingPlant = plantList.FirstOrDefault(list => list[0] == PlantKartAndSN.Kart && list[1] == PlantKartAndSN.SN);
+				if (existingPlant != null)
 				{
-					if (KartExcData.PlantList[i][0] == SetRiderItem.Set_Kart && KartExcData.PlantList[i][1] == SetRiderItem.Set_KartSN)
-					{
-						Plant = i;
-						break;
-					}
-				}
-				if (Plant > -1)
-				{
-					oPacket.WriteShort(KartExcData.PlantList[Plant][3]);
-					oPacket.WriteShort(KartExcData.PlantList[Plant][7]);
-					oPacket.WriteShort(KartExcData.PlantList[Plant][5]);
-					oPacket.WriteShort(KartExcData.PlantList[Plant][9]);
+					oPacket.WriteShort(existingPlant[3]);
+					oPacket.WriteShort(existingPlant[7]);
+					oPacket.WriteShort(existingPlant[5]);
+					oPacket.WriteShort(existingPlant[9]);
 				}
 				else
 				{
@@ -129,32 +124,19 @@ namespace RiderData
 				oPacket.WriteShort(SetRiderItem.Set_Dye);
 				oPacket.WriteShort(SetRiderItem.Set_KartSN);
 				oPacket.WriteByte(0);
-				int Parts = -1;
-				for (var i = 0; i < KartExcData.PartsList.Count; i++)
+				var ExcKartAndSN = new { Kart = SetRiderItem.Set_Kart, SN = SetRiderItem.Set_KartSN };
+				var partsList = KartExcData.PartsList;
+				var existingParts = partsList.FirstOrDefault(list => list[0] == ExcKartAndSN.Kart && list[1] == ExcKartAndSN.SN);
+				if (existingParts != null)
 				{
-					if (KartExcData.PartsList[i][0] == SetRiderItem.Set_Kart && KartExcData.PartsList[i][1] == SetRiderItem.Set_KartSN)
-					{
-						Parts = i;
-						break;
-					}
-				}
-				if (Parts > -1)
-				{
-					oPacket.WriteShort(KartExcData.PartsList[Parts][14]);
-					oPacket.WriteShort(KartExcData.PartsList[Parts][15]);
+					oPacket.WriteShort(existingParts[14]);
+					oPacket.WriteShort(existingParts[15]);
 				}
 				else
 				{
-					int Level = -1;
-					for (var i = 0; i < KartExcData.LevelList.Count; i++)
-					{
-						if (KartExcData.LevelList[i][0] == SetRiderItem.Set_Kart && KartExcData.LevelList[i][1] == SetRiderItem.Set_KartSN)
-						{
-							Level = i;
-							break;
-						}
-					}
-					if (Level > -1)
+					var levelList = KartExcData.LevelList;
+					var existingLevel = levelList.FirstOrDefault(list => list[0] == ExcKartAndSN.Kart && list[1] == ExcKartAndSN.SN);
+					if (existingLevel != null)
 					{
 						oPacket.WriteShort(7);
 						oPacket.WriteShort(0);
@@ -182,9 +164,8 @@ namespace RiderData
 			List<List<short>> item = new List<List<short>>();
 			short sn = 1;
 			HashSet<short> seenIds = new HashSet<short>();
-			for (int i = 0; i < KartExcData.kart.Count; i++)
+			foreach (var id in KartExcData.kart)
 			{
-				short id = KartExcData.kart[i];
 				if (seenIds.Contains(id))
 				{
 					sn++;
@@ -223,9 +204,8 @@ namespace RiderData
 		public static void color()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.color.Count; i++)
+			foreach (var id in KartExcData.color)
 			{
-				short id = KartExcData.color[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -240,9 +220,8 @@ namespace RiderData
 		public static void dye()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.dye.Count; i++)
+			foreach (var id in KartExcData.dye)
 			{
-				short id = KartExcData.dye[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -257,9 +236,8 @@ namespace RiderData
 		public static void character()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.character.Count; i++)
+			foreach (var id in KartExcData.character)
 			{
-				short id = KartExcData.character[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -274,9 +252,8 @@ namespace RiderData
 		public static void pet()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.pet.Count; i++)
+			foreach (var id in KartExcData.pet)
 			{
-				short id = KartExcData.pet[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -291,9 +268,8 @@ namespace RiderData
 		public static void initialCard()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.initialCard.Count; i++)
+			foreach (var id in KartExcData.initialCard)
 			{
-				short id = KartExcData.initialCard[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				List<short> add = new List<short>();
@@ -308,9 +284,8 @@ namespace RiderData
 		public static void flyingPet()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.flyingPet.Count; i++)
+			foreach (var id in KartExcData.flyingPet)
 			{
-				short id = KartExcData.flyingPet[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -325,9 +300,8 @@ namespace RiderData
 		public static void enchantProtect2()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.enchantProtect2.Count; i++)
+			foreach (var id in KartExcData.enchantProtect2)
 			{
-				short id = KartExcData.enchantProtect2[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -342,9 +316,8 @@ namespace RiderData
 		public static void uniform()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.uniform.Count; i++)
+			foreach (var id in KartExcData.uniform)
 			{
-				short id = KartExcData.uniform[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -359,9 +332,8 @@ namespace RiderData
 		public static void aura()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.aura.Count; i++)
+			foreach (var id in KartExcData.aura)
 			{
-				short id = KartExcData.aura[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -376,9 +348,8 @@ namespace RiderData
 		public static void skidMark()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.skidMark.Count; i++)
+			foreach (var id in KartExcData.skidMark)
 			{
-				short id = KartExcData.skidMark[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -393,9 +364,8 @@ namespace RiderData
 		public static void plate()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.plate.Count; i++)
+			foreach (var id in KartExcData.plate)
 			{
-				short id = KartExcData.plate[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -410,9 +380,8 @@ namespace RiderData
 		public static void balloon()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.balloon.Count; i++)
+			foreach (var id in KartExcData.balloon)
 			{
-				short id = KartExcData.balloon[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -427,9 +396,8 @@ namespace RiderData
 		public static void goggle()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.goggle.Count; i++)
+			foreach (var id in KartExcData.goggle)
 			{
-				short id = KartExcData.goggle[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -444,9 +412,8 @@ namespace RiderData
 		public static void headBand()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.headBand.Count; i++)
+			foreach (var id in KartExcData.headBand)
 			{
-				short id = KartExcData.headBand[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -461,9 +428,8 @@ namespace RiderData
 		public static void headPhone()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.headPhone.Count; i++)
+			foreach (var id in KartExcData.headPhone)
 			{
-				short id = KartExcData.headPhone[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -478,9 +444,8 @@ namespace RiderData
 		public static void handGearL()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.handGearL.Count; i++)
+			foreach (var id in KartExcData.handGearL)
 			{
-				short id = KartExcData.handGearL[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -495,9 +460,8 @@ namespace RiderData
 		public static void roomCard()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.roomCard.Count; i++)
+			foreach (var id in KartExcData.roomCard)
 			{
-				short id = KartExcData.roomCard[i];
 				short sn = 0;
 				short num = 1;
 				if (id != 50 && id != 37)
@@ -515,9 +479,8 @@ namespace RiderData
 		public static void ridColor()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.ridColor.Count; i++)
+			foreach (var id in KartExcData.ridColor)
 			{
-				short id = KartExcData.ridColor[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -532,9 +495,8 @@ namespace RiderData
 		public static void rpLucciBonus()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.rpLucciBonus.Count; i++)
+			foreach (var id in KartExcData.rpLucciBonus)
 			{
-				short id = KartExcData.rpLucciBonus[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -549,9 +511,8 @@ namespace RiderData
 		public static void slotChanger()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.slotChanger.Count; i++)
+			foreach (var id in KartExcData.slotChanger)
 			{
-				short id = KartExcData.slotChanger[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				List<short> add = new List<short>();
@@ -566,9 +527,8 @@ namespace RiderData
 		public static void slotBg()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.slotBg.Count; i++)
+			foreach (var id in KartExcData.slotBg)
 			{
-				short id = KartExcData.slotBg[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -583,9 +543,8 @@ namespace RiderData
 		public static void decal()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.decal.Count; i++)
+			foreach (var id in KartExcData.decal)
 			{
-				short id = KartExcData.decal[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -600,9 +559,8 @@ namespace RiderData
 		public static void card()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.card.Count; i++)
+			foreach (var id in KartExcData.card)
 			{
-				short id = KartExcData.card[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				if (id == 1 || id == 3 || id == 89 || id == 97 || id == 98 || id == 99 || id == 100 || id == 106)
@@ -620,9 +578,8 @@ namespace RiderData
 		public static void ticket()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.ticket.Count; i++)
+			foreach (var id in KartExcData.ticket)
 			{
-				short id = KartExcData.ticket[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
@@ -637,9 +594,8 @@ namespace RiderData
 		public static void tachometer()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.tachometer.Count; i++)
+			foreach (var id in KartExcData.tachometer)
 			{
-				short id = KartExcData.tachometer[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				List<short> add = new List<short>();
@@ -654,9 +610,8 @@ namespace RiderData
 		public static void tuneEnginePatch()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.tuneEnginePatch.Count; i++)
+			foreach (var id in KartExcData.tuneEnginePatch)
 			{
-				short id = KartExcData.tuneEnginePatch[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				List<short> add = new List<short>();
@@ -671,9 +626,8 @@ namespace RiderData
 		public static void tuneHandle()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.tuneHandle.Count; i++)
+			foreach (var id in KartExcData.tuneHandle)
 			{
-				short id = KartExcData.tuneHandle[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				List<short> add = new List<short>();
@@ -688,9 +642,8 @@ namespace RiderData
 		public static void tuneWheel()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.tuneWheel.Count; i++)
+			foreach (var id in KartExcData.tuneWheel)
 			{
-				short id = KartExcData.tuneWheel[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				List<short> add = new List<short>();
@@ -705,9 +658,8 @@ namespace RiderData
 		public static void tuneSupportKit()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.tuneSupportKit.Count; i++)
+			foreach (var id in KartExcData.tuneSupportKit)
 			{
-				short id = KartExcData.tuneSupportKit[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				List<short> add = new List<short>();
@@ -722,9 +674,8 @@ namespace RiderData
 		public static void enchantProtect()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.enchantProtect.Count; i++)
+			foreach (var id in KartExcData.enchantProtect)
 			{
-				short id = KartExcData.enchantProtect[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				List<short> add = new List<short>();
@@ -739,9 +690,8 @@ namespace RiderData
 		public static void socket()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.socket.Count; i++)
+			foreach (var id in KartExcData.socket)
 			{
-				short id = KartExcData.socket[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				List<short> add = new List<short>();
@@ -756,9 +706,8 @@ namespace RiderData
 		public static void tune()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.tune.Count; i++)
+			foreach (var id in KartExcData.tune)
 			{
-				short id = KartExcData.tune[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				List<short> add = new List<short>();
@@ -773,9 +722,8 @@ namespace RiderData
 		public static void resetSocket()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.resetSocket.Count; i++)
+			foreach (var id in KartExcData.resetSocket)
 			{
-				short id = KartExcData.resetSocket[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				List<short> add = new List<short>();
@@ -1343,9 +1291,8 @@ namespace RiderData
 		public static void partsCoating()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.partsCoating.Count; i++)
+			foreach (var id in KartExcData.partsCoating)
 			{
-				short id = KartExcData.partsCoating[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				List<short> add = new List<short>();
@@ -1360,9 +1307,8 @@ namespace RiderData
 		public static void partsTailLamp()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.partsTailLamp.Count; i++)
+			foreach (var id in KartExcData.partsTailLamp)
 			{
-				short id = KartExcData.partsTailLamp[i];
 				short sn = 0;
 				short num = SetRider.SlotChanger;
 				List<short> add = new List<short>();
@@ -1377,9 +1323,8 @@ namespace RiderData
 		public static void upgradeKit()
 		{
 			List<List<short>> item = new List<List<short>>();
-			for (int i = 0; i < KartExcData.upgradeKit.Count; i++)
+			foreach (var id in KartExcData.upgradeKit)
 			{
-				short id = KartExcData.upgradeKit[i];
 				short sn = 0;
 				short num = 1;
 				List<short> add = new List<short>();
