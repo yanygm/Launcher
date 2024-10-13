@@ -193,6 +193,7 @@ namespace RiderData
 				{
 					seenIds.Add(id);
 				}
+				/*
 				using (OutPacket outPacket = new OutPacket("PrRequestKartInfoPacket"))
 				{
 					outPacket.WriteByte(1);
@@ -208,16 +209,17 @@ namespace RiderData
 					outPacket.WriteShort(0);
 					RouterListener.MySession.Client.Send(outPacket);
 				}
-				/*
+				*/
+				
 				short num = 1;
 				List<short> add = new List<short>();
 				add.Add(id);
 				add.Add(sn);
 				add.Add(num);
 				item.Add(add);
-				*/
+				
 			}
-			//LoRpGetRiderItemPacket(3, item);
+			LoRpGetRiderItemPacket(3, item);
 		}
 
 		public static void color()
