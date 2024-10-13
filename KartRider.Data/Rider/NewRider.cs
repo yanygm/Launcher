@@ -58,6 +58,10 @@ namespace RiderData
 			NewRider.V1LegendPartsData();
 			NewRider.V1RarePartsData();
 			NewRider.V1NormalPartsData();
+			KartExcData.Tune_ExcData();
+			KartExcData.Plant_ExcData();
+			KartExcData.Level_ExcData();
+			KartExcData.Parts_ExcData();
 			NewRider.kart();
 			NewRider.NewRiderData();//라이더 인식
 			Launcher.OpenGetItem = true;
@@ -214,10 +218,6 @@ namespace RiderData
 				*/
 			}
 			//LoRpGetRiderItemPacket(3, item);
-			KartExcData.Tune_ExcData();
-			KartExcData.Plant_ExcData();
-			KartExcData.Level_ExcData();
-			KartExcData.Parts_ExcData();
 		}
 
 		public static void color()
