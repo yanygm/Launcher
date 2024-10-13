@@ -138,7 +138,7 @@ namespace RHOParser
 			{
 				if (!(data.PackageType == "RhoFolder"))
 					return;
-				if (data.PackageDataProp["name"] == "boss" || data.PackageDataProp["name"] == "myRoom" || data.PackageDataProp["name"] == "effect" || data.PackageDataProp["name"] == "trackThumb" || data.PackageDataProp["name"] == "item" || data.PackageDataProp["name"] == "dialog" || data.PackageDataProp["name"] == "stuff")
+				if (data.PackageDataProp["name"] == "stuff2" || data.PackageDataProp["name"] == "gui" || data.PackageDataProp["name"] == "track" || data.PackageDataProp["name"] == "sound" || data.PackageDataProp["name"] == "character" || data.PackageDataProp["name"] == "dialog2" || data.PackageDataProp["name"] == "theme" || data.PackageDataProp["name"] == "stage" || data.PackageDataProp["name"] == "zeta" || data.PackageDataProp["name"] == "pet" || data.PackageDataProp["name"] == "trackThumb" || data.PackageDataProp["name"] == "boss" || data.PackageDataProp["name"] == "dialog" || data.PackageDataProp["name"] == "item" || data.PackageDataProp["name"] == "myRoom" || data.PackageDataProp["name"] == "effect" || data.PackageDataProp["name"] == "stuff")
 					return;
 				string path = data.PackageDataProp["fileName"];
 				string str1 = data.PackageDataProp["name"];
