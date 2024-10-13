@@ -532,7 +532,6 @@ namespace RHOParser
 										}
 									}
 								}
-								break;
 							}
 							//File.WriteAllBytes(tuple.Item1, decompressedData);
 						}
