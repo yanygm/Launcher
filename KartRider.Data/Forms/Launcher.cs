@@ -154,7 +154,7 @@ namespace KartRider
 					}
 				}
 				rho5.Main(@".\Data\");
-				rho.Main(@".\Data\");
+				KartRhoFile.Main(@".\Data\");
 				Load_KartExcData();
 				StartingLoad_ALL.StartingLoad();
 				if (Program.Developer_Name || pinFile == null)

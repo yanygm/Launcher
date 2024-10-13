@@ -12,10 +12,12 @@ using System.Windows.Forms;
 using KartRider.Xml;
 using ExcData;
 using System.Xml;
+using Ionic.Zlib;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace RHOParser
 {
-	internal class rho
+	public static class KartRhoFile
 	{
 		private static Dictionary<int, List<string>> map_extension = new Dictionary<int, List<string>>();
 
@@ -286,7 +288,7 @@ namespace RHOParser
 			byte[] numArray2 = new byte[2048];
 			List<byte[]> numArrayList = new List<byte[]>();
 			int length1 = 0;
-			DeflateStream deflateStream = new DeflateStream((Stream)new MemoryStream(numArray1), CompressionMode.Decompress);
+			System.IO.Compression.DeflateStream deflateStream = new System.IO.Compression.DeflateStream((Stream)new MemoryStream(numArray1), System.IO.Compression.CompressionMode.Decompress);
 			int length2;
 			while ((length2 = deflateStream.Read(numArray2, 0, 2048)) > 0)
 			{
@@ -315,67 +317,13 @@ namespace RHOParser
 
 		public static void Main(string args)
 		{
-			byte[] buffer = (byte[])null;
-			using (FileStream input = new FileStream(args + "aaa.pk", FileMode.Open, FileAccess.Read))
-			{
-				using (BinaryReader binaryReader = new BinaryReader((Stream)input))
-				{
-					int count = binaryReader.ReadInt32();
-					buffer = new byte[count];
-					buffer = binaryReader.ReadBytes(count);
-				}
-			}
-			InPacket iPacket = (InPacket)null;
-			using (BinaryReader binaryReader = new BinaryReader((Stream)new MemoryStream(buffer)))
-			{
-				if (binaryReader.ReadByte() != (byte)83)
-					Console.WriteLine("Invalid 1 (Check1 != 'S')");
-				byte num = binaryReader.ReadByte();
-				bool flag1 = ((uint)num & 1U) > 0U;
-				bool flag2 = ((uint)num & 2U) > 0U;
-				binaryReader.ReadUInt32();
-				uint key = binaryReader.ReadUInt32();
-				binaryReader.ReadUInt32();
-				byte[] numArray1 = binaryReader.ReadBytes((int)(binaryReader.BaseStream.Length - binaryReader.BaseStream.Position));
-				byte[] numArray2 = new byte[numArray1.Length];
-				Buffer.BlockCopy((Array)numArray1, 0, (Array)numArray2, 0, numArray2.Length);
-				if (flag2)
-					numArray1 = DecryptKRCrypto(numArray1, key);
-				if (flag1)
-				{
-					byte[] numArray3 = new byte[numArray1.Length - 2];
-					Buffer.BlockCopy((Array)numArray1, 2, (Array)numArray3, 0, numArray3.Length);
-					byte[] numArray4 = new byte[2048];
-					List<byte[]> numArrayList = new List<byte[]>();
-					int length1 = 0;
-					DeflateStream deflateStream = new DeflateStream((Stream)new MemoryStream(numArray3), CompressionMode.Decompress);
-					int length2;
-					while ((length2 = deflateStream.Read(numArray4, 0, 2048)) > 0)
-					{
-						if (length2 == 2048)
-						{
-							numArrayList.Add(numArray4);
-							numArray4 = new byte[2048];
-						}
-						else
-						{
-							byte[] destinationArray = new byte[length2];
-							Array.Copy((Array)numArray4, 0, (Array)destinationArray, 0, length2);
-							numArrayList.Add(destinationArray);
-						}
-						length1 += length2;
-					}
-					numArray2 = new byte[length1];
-					int destinationIndex = 0;
-					foreach (byte[] sourceArray in numArrayList)
-					{
-						Array.Copy((Array)sourceArray, 0, (Array)numArray2, destinationIndex, sourceArray.Length);
-						destinationIndex += sourceArray.Length;
-					}
-				}
-				RTTIHelper.GenerateRTTIHash(numArray2);
-				iPacket = new InPacket(numArray2);
-			}
+			FileStream fileStream = new FileStream(args + "aaa.pk", FileMode.Open, FileAccess.Read);
+			BinaryReader binaryReader = new BinaryReader(fileStream);
+			int totalLength = binaryReader.ReadInt32();
+			byte[] array = binaryReader.ReadKRData(totalLength);
+			fileStream.Close();
+			RTTIHelper.GenerateRTTIHash(array);
+			InPacket iPacket = new InPacket(array);
 			if (iPacket != null)
 			{
 				PackageData data = new PackageData();
