@@ -386,6 +386,7 @@ namespace KartRider
 							outPacket.WriteString("单机版完全免费，跑跑資訊站：https://kartinfo.me/thread-9369-1-1.html");
 							this.Parent.Client.Send(outPacket);
 						}
+						File.Delete(@"KartRider.xml");
 						return;
 					}
 					else if (hash == Adler32Helper.GenerateAdler32_ASCII("ChReRqEnterMyRoomPacket", 0) || hash == Adler32Helper.GenerateAdler32_ASCII("ChRqEnterRandomMyRoomPacket", 0))
@@ -2054,7 +2055,6 @@ namespace KartRider
 							outPacket.WriteByte(SetRider.IdentificationType);
 							RouterListener.MySession.Client.Send(outPacket);
 						}
-						File.Delete(@"KartRider.xml");
 						return;
 					}
 					else if (hash == Adler32Helper.GenerateAdler32_ASCII("PqSyncJackpotPointCS", 0))
