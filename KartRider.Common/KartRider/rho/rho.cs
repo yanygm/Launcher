@@ -156,18 +156,18 @@ namespace RHOParser
 							{
 								if (zeta.PackageDataProp["name"] == "cn")
 								{
-									config.region = "CN";
-									rho5.Main();
+									config.region = "cn";
+									KartRho5File.Rho5File();
 								}
 								else if (zeta.PackageDataProp["name"] == "kr")
 								{
-									config.region = "KR";
-									rho5.Main();
+									config.region = "kr";
+									KartRho5File.Rho5File();
 								}
 								else if (zeta.PackageDataProp["name"] == "tw")
 								{
-									config.region = "TW";
-									rho5.Main();
+									config.region = "tw";
+									KartRho5File.Rho5File();
 								}
 							}
 						}
@@ -367,7 +367,7 @@ namespace RHOParser
 			decompressedData = destinationArray1;
 		}
 
-		public static void Main()
+		public static void RhoFile()
 		{
 			string args = @"Data\";
 			FileStream fileStream = new FileStream(args + "aaa.pk", FileMode.Open, FileAccess.Read);

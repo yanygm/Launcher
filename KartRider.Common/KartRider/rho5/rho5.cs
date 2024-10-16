@@ -9,6 +9,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Xml;
 using ExcData;
 using RiderData;
+using Set_Data;
 using System.Xml.Linq;
 using System.Data.SqlTypes;
 using System.Linq;
@@ -17,7 +18,7 @@ using System.Drawing;
 
 namespace RHOParser
 {
-	internal class rho5
+	internal class KartRho5File
 	{
 		public static string GetKey(string extName)
 		{
@@ -30,17 +31,21 @@ namespace RHOParser
 					return "AFLKJQOIG@9u0";
 				case "rho4":
 				case "rho5":
-					if (config.region == "CN")
+					if (config.region == "cn")
 					{
 						return "d$Bjgfc8@dH4TQ?k";
 					}
-					else if (config.region == "KR")
+					else if (config.region == "kr")
 					{
 						return "y&errfV6GRS!e8JL";
 					}
-					else if (config.region == "TW")
+					else if (config.region == "tw")
 					{
 						return "t5rHKg-g9BA7%=qD";
+					}
+					else
+					{
+						return null;
 					}
 				case "pkn":
 					return "";
@@ -301,7 +306,7 @@ namespace RHOParser
 									}
 								}
 							}
-							else if (tuple.Item1 != null && tuple.Item1 == "etc_/emblem/emblem@cn.xml")
+							else if (tuple.Item1 != null && tuple.Item1 == "etc_/emblem/emblem@" + config.region + ".xml")
 							{
 								Console.WriteLine(tuple.Item1);
 								using (MemoryStream stream = new MemoryStream(decompressedData))
@@ -321,7 +326,7 @@ namespace RHOParser
 									}
 								}
 							}
-							else if (tuple.Item1 != null && tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param@cn.xml"))
+							else if (tuple.Item1 != null && tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param@" + config.region + ".xml"))
 							{
 								Console.WriteLine(tuple.Item1);
 								string name = tuple.Item1.Substring(6, tuple.Item1.Length - 19);
@@ -351,7 +356,7 @@ namespace RHOParser
 									}
 								}
 							}
-							else if (tuple.Item1 != null && tuple.Item1 == "zeta_/cn/content/itemDictionary.xml")
+							else if (tuple.Item1 != null && tuple.Item1 == "zeta_/" + config.region + "/content/itemDictionary.xml")
 							{
 								Console.WriteLine(tuple.Item1);
 								using (MemoryStream stream = new MemoryStream(decompressedData))
@@ -375,7 +380,7 @@ namespace RHOParser
 									}
 								}
 							}
-							else if (tuple.Item1 != null && tuple.Item1 == "zeta_/cn/shop/data/item.kml")
+							else if (tuple.Item1 != null && tuple.Item1 == "zeta_/" + config.region + "/shop/data/item.kml")
 							{
 								Console.WriteLine(tuple.Item1);
 								using (MemoryStream stream = new MemoryStream(decompressedData))
@@ -562,7 +567,7 @@ namespace RHOParser
 			decompressedData = ZlibStream.UncompressBuffer(compressedData);
 		}
 
-		public static void Main()
+		public static void Rho5File()
 		{
 			string args = @"Data\";
 			foreach (string file in Directory.GetFiles(args))
