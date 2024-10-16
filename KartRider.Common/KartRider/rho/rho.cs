@@ -295,7 +295,7 @@ namespace RHOParser
 					destinationIndex += rhoBlock.OriginalSize;
 					++key2;
 				}
-				if (keyValuePair.Key == "randomTrack@cn.bml")
+				if (keyValuePair.Key == "randomTrack@" + config.region + ".bml")
 				{
 					BinaryXmlDocument bxd = new BinaryXmlDocument();
 					bxd.Read(Encoding.GetEncoding("UTF-16"), numArray);
@@ -309,7 +309,7 @@ namespace RHOParser
 						KartExcData.randomTrack = XDocument.Load(stream);
 					}
 				}
-				if (keyValuePair.Key == "param@cn.bml")
+				if (keyValuePair.Key == "param@" + config.region + ".bml")
 				{
 					BinaryXmlDocument bxd = new BinaryXmlDocument();
 					bxd.Read(Encoding.GetEncoding("UTF-16"), numArray);
