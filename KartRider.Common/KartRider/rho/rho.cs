@@ -11,6 +11,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Windows.Forms;
 using KartRider.Xml;
 using ExcData;
+using Set_Data;
 using System.Xml;
 using Ionic.Zlib;
 using Microsoft.VisualBasic.ApplicationServices;
@@ -146,6 +147,27 @@ namespace RHOParser
 								if (track.PackageDataProp["name"] == "common")
 								{
 									Dump(track, currentPath + Path.DirectorySeparatorChar.ToString() + track.PackageDataProp["name"], args);
+								}
+							}
+						}
+						if (subPackage.PackageDataProp["name"] == "zeta")
+						{
+							foreach (PackageData zeta in subPackage.SubPackages)
+							{
+								if (zeta.PackageDataProp["name"] == "cn")
+								{
+									config.region = "CN";
+									rho5.Main();
+								}
+								else if (zeta.PackageDataProp["name"] == "kr")
+								{
+									config.region = "KR";
+									rho5.Main();
+								}
+								else if (zeta.PackageDataProp["name"] == "tw")
+								{
+									config.region = "TW";
+									rho5.Main();
 								}
 							}
 						}
@@ -345,8 +367,9 @@ namespace RHOParser
 			decompressedData = destinationArray1;
 		}
 
-		public static void Main(string args)
+		public static void Main()
 		{
+			string args = @"Data\";
 			FileStream fileStream = new FileStream(args + "aaa.pk", FileMode.Open, FileAccess.Read);
 			BinaryReader binaryReader = new BinaryReader(fileStream);
 			int totalLength = binaryReader.ReadInt32();

@@ -145,8 +145,7 @@ namespace KartRider
 			}
 			if (File.Exists(Launcher.KartRider) || File.Exists(@"KartRider.pin"))
 			{
-				rho5.Main(@".\Data\");
-				KartRhoFile.Main(@".\Data\");
+				KartRhoFile.Main();
 				Load_KartExcData();
 				StartingLoad_ALL.StartingLoad();
 				if (Program.Developer_Name || pinFile == null)

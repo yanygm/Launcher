@@ -30,9 +30,18 @@ namespace RHOParser
 					return "AFLKJQOIG@9u0";
 				case "rho4":
 				case "rho5":
-					//return "t5rHKg-g9BA7%=qD"; //TW
-					//return "y&errfV6GRS!e8JL"; //HK
-					return "d$Bjgfc8@dH4TQ?k"; //CN
+					if (config.region == "CN")
+					{
+						return "d$Bjgfc8@dH4TQ?k";
+					}
+					else if (config.region == "KR")
+					{
+						return "y&errfV6GRS!e8JL";
+					}
+					else if (config.region == "TW")
+					{
+						return "t5rHKg-g9BA7%=qD";
+					}
 				case "pkn":
 					return "";
 				default:
@@ -553,8 +562,9 @@ namespace RHOParser
 			decompressedData = ZlibStream.UncompressBuffer(compressedData);
 		}
 
-		public static void Main(string args)
+		public static void Main()
 		{
+			string args = @"Data\";
 			foreach (string file in Directory.GetFiles(args))
 			{
 				if (file.EndsWith(".rho5"))
