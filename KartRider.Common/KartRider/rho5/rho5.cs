@@ -205,11 +205,10 @@ namespace RHOParser
 							//Console.WriteLine(" - {0}", (object) tuple.Item1);
 							ECRYPT_ctx ctx3 = new ECRYPT_ctx();
 							byte[] decompressedData = null;
-							if (tuple.Item1 == "etc_/itemTable.kml" || tuple.Item1 == "etc_/emblem/emblem@cn.xml" || (tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param@cn.xml")) || tuple.Item1 == "zeta_/cn/content/itemDictionary.xml" || tuple.Item1 == "zeta_/cn/shop/data/item.kml")
+							if (tuple.Item1 == "etc_/itemTable.kml" || tuple.Item1 == "etc_/emblem/emblem@" + config.region + ".xml" || (tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param@" + config.region + ".xml")) || tuple.Item1 == "zeta_/" + config.region + "/content/itemDictionary.xml" || tuple.Item1 == "zeta_/" + config.region + "/shop/data/item.kml")
 							{
 								decompressedData = binaryReader.ReadBytes((int)tuple.Item5);
 							}
-
 							if (((ulong)tuple.Item2 & 18446744073709551608UL) > 0UL)
 								Debugger.Break();
 							uint num17 = (uint)Math.Log10((double)d);
