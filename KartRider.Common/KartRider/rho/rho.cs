@@ -125,7 +125,7 @@ namespace RHOParser
 			return decompressedData;
 		}
 
-				private static void Dump(PackageData data, string currentPath, string args)
+		private static void Dump(PackageData data, string currentPath, string args)
 		{
 			if (data.PackageType == "PackFolder")
 			{
@@ -136,6 +136,7 @@ namespace RHOParser
 					if (zetaPackage != null)
 					{
 						config.region = zetaPackage.SubPackages[0].PackageDataProp["name"];
+						Console.WriteLine(config.region);
 						Dump(data, currentPath, args);
 						return;
 					}
