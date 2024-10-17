@@ -355,6 +355,38 @@ namespace RHOParser
 									}
 								}
 							}
+							else if (tuple.Item1 != null && tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param.xml"))
+							{
+								Console.WriteLine(tuple.Item1);
+								string name = tuple.Item1.Substring(6, tuple.Item1.Length - 19);
+								if (!KartExcData.KartSpec.ContainsKey(name))
+								{
+									if (decompressedData[2] == 13 && decompressedData[3] == 0 && decompressedData[4] == 10 && decompressedData[5] == 0)
+									{
+										byte[] newBytes = new byte[decompressedData.Length - 4];
+										newBytes[0] = 255;
+										newBytes[1] = 254;
+										Array.Copy(decompressedData, 6, newBytes, 2, decompressedData.Length - 6);
+										//File.WriteAllBytes(@"KartSpec\" + name + ".xml", newBytes);
+										using (MemoryStream stream = new MemoryStream(newBytes))
+										{
+											XmlDocument kart1 = new XmlDocument();
+											kart1.Load(stream);
+											KartExcData.KartSpec.Add(name, kart1);
+										}
+									}
+									else
+									{
+										//File.WriteAllBytes(@"KartSpec\" + name + ".xml", decompressedData);
+										using (MemoryStream stream = new MemoryStream(decompressedData))
+										{
+											XmlDocument kart2 = new XmlDocument();
+											kart2.Load(stream);
+											KartExcData.KartSpec.Add(name, kart2);
+										}
+									}
+								}
+							}
 							else if (tuple.Item1 != null && tuple.Item1 == "zeta_/" + config.region + "/content/itemDictionary.xml")
 							{
 								Console.WriteLine(tuple.Item1);
