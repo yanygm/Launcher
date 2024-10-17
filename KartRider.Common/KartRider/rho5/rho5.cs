@@ -335,11 +335,11 @@ namespace RHOParser
 							{
 								Console.WriteLine(tuple.Item1);
 								string name = tuple.Item1.Substring(10, tuple.Item1.Length - 23);
-								using (MemoryStream stream = new MemoryStream(output_data))
+								using (MemoryStream stream = new MemoryStream(decompressedData))
 								{
 									XmlDocument flying = new XmlDocument();
 									flying.Load(stream);
-									KartExcData.flyingSpec.Add(lastPart, flying);
+									KartExcData.flyingSpec.Add(name, flying);
 								}
 							}
 							if (tuple.Item1 != null && tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param@" + config.region + ".xml"))
