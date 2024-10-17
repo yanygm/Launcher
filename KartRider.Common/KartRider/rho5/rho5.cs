@@ -205,7 +205,13 @@ namespace RHOParser
 							//Console.WriteLine(" - {0}", (object) tuple.Item1);
 							ECRYPT_ctx ctx3 = new ECRYPT_ctx();
 							byte[] decompressedData = null;
-							if (tuple.Item1 == "etc_/itemTable.kml" || tuple.Item1 == "etc_/emblem/emblem@" + config.region + ".xml" || (tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param@" + config.region + ".xml")) || (tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param.xml")) || tuple.Item1 == "zeta_/" + config.region + "/content/itemDictionary.xml" || tuple.Item1 == "zeta_/" + config.region + "/shop/data/item.kml")
+							if (tuple.Item1 == "etc_/itemTable.kml" || 
+							tuple.Item1 == "etc_/emblem/emblem@" + config.region + ".xml" || 
+							(tuple.Item1.Contains("flyingPet") && tuple.Item1.Contains("/param@" + config.region + ".xml")) || 
+							(tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param@" + config.region + ".xml")) || 
+							(tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param.xml")) || 
+							tuple.Item1 == "zeta_/" + config.region + "/content/itemDictionary.xml" || 
+							tuple.Item1 == "zeta_/" + config.region + "/shop/data/item.kml")
 							{
 								decompressedData = binaryReader.ReadBytes((int)tuple.Item5);
 							}
@@ -305,7 +311,7 @@ namespace RHOParser
 									}
 								}
 							}
-							else if (tuple.Item1 != null && tuple.Item1 == "etc_/emblem/emblem@" + config.region + ".xml")
+							if (tuple.Item1 != null && tuple.Item1 == "etc_/emblem/emblem@" + config.region + ".xml")
 							{
 								Console.WriteLine(tuple.Item1);
 								using (MemoryStream stream = new MemoryStream(decompressedData))
@@ -325,7 +331,18 @@ namespace RHOParser
 									}
 								}
 							}
-							else if (tuple.Item1 != null && tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param@" + config.region + ".xml"))
+							if (tuple.Item1 != null && tuple.Item1.Contains("flyingPet") && tuple.Item1.Contains("/param@" + config.region + ".xml"))
+							{
+								Console.WriteLine(tuple.Item1);
+								string name = tuple.Item1.Substring(10, tuple.Item1.Length - 23);
+								using (MemoryStream stream = new MemoryStream(output_data))
+								{
+									XmlDocument flying = new XmlDocument();
+									flying.Load(stream);
+									KartExcData.flyingSpec.Add(lastPart, flying);
+								}
+							}
+							if (tuple.Item1 != null && tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param@" + config.region + ".xml"))
 							{
 								Console.WriteLine(tuple.Item1);
 								string name = tuple.Item1.Substring(6, tuple.Item1.Length - 19);
@@ -355,7 +372,7 @@ namespace RHOParser
 									}
 								}
 							}
-							else if (tuple.Item1 != null && tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param.xml"))
+							if (tuple.Item1 != null && tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param.xml"))
 							{
 								string name = tuple.Item1.Substring(6, tuple.Item1.Length - 16);
 								bool containsTarget = tupleList.Any(tuple => tuple.Item1 == "kart_/" + name + "/param@cn.xml");
@@ -388,7 +405,7 @@ namespace RHOParser
 									}
 								}
 							}
-							else if (tuple.Item1 != null && tuple.Item1 == "zeta_/" + config.region + "/content/itemDictionary.xml")
+							if (tuple.Item1 != null && tuple.Item1 == "zeta_/" + config.region + "/content/itemDictionary.xml")
 							{
 								Console.WriteLine(tuple.Item1);
 								using (MemoryStream stream = new MemoryStream(decompressedData))
@@ -412,7 +429,7 @@ namespace RHOParser
 									}
 								}
 							}
-							else if (tuple.Item1 != null && tuple.Item1 == "zeta_/" + config.region + "/shop/data/item.kml")
+							if (tuple.Item1 != null && tuple.Item1 == "zeta_/" + config.region + "/shop/data/item.kml")
 							{
 								Console.WriteLine(tuple.Item1);
 								using (MemoryStream stream = new MemoryStream(decompressedData))
@@ -578,10 +595,6 @@ namespace RHOParser
 										}
 									}
 								}
-							}
-							else
-							{
-								break;
 							}
 							//File.WriteAllBytes(tuple.Item1, decompressedData);
 						}
