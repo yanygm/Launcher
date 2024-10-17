@@ -209,10 +209,6 @@ namespace RHOParser
 							{
 								decompressedData = binaryReader.ReadBytes((int)tuple.Item5);
 							}
-							else
-							{
-								break;
-							}
 							if (((ulong)tuple.Item2 & 18446744073709551608UL) > 0UL)
 								Debugger.Break();
 							uint num17 = (uint)Math.Log10((double)d);
@@ -549,6 +545,10 @@ namespace RHOParser
 										}
 									}
 								}
+							}
+							else
+							{
+								break;
 							}
 							//File.WriteAllBytes(tuple.Item1, decompressedData);
 						}
