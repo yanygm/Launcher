@@ -358,7 +358,8 @@ namespace RHOParser
 							else if (tuple.Item1 != null && tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param.xml"))
 							{
 								string name = tuple.Item1.Substring(6, tuple.Item1.Length - 19);
-								if (!KartExcData.KartSpec.ContainsKey(name))
+								bool containsTarget = tupleList.Any(tuple => tuple.Item1 == "kart_/" + name + "/param@cn.xml");
+								if (!containsTarget)
 								{
 									Console.WriteLine(tuple.Item1);
 									if (decompressedData[2] == 13 && decompressedData[3] == 0 && decompressedData[4] == 10 && decompressedData[5] == 0)
