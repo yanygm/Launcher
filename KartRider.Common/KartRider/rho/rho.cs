@@ -125,12 +125,22 @@ namespace RHOParser
 			return decompressedData;
 		}
 
-		private static void Dump(PackageData data, string currentPath, string args)
+				private static void Dump(PackageData data, string currentPath, string args)
 		{
 			if (data.PackageType == "PackFolder")
 			{
-				if(data.PackageDataProp["name"] == "KartRider")
+				if (data.PackageDataProp["name"] == "KartRider")
 				{
+					// 优先查找 zeta
+					var zetaPackage = data.SubPackages.FirstOrDefault(sub => sub.PackageDataProp["name"] == "zeta");
+					if (zetaPackage != null)
+					{
+						config.region = zetaPackage.SubPackages[0].PackageDataProp["name"];
+						Dump(data, currentPath, args);
+						return;
+					}
+
+					// 如果没有 zeta，再查找 flyingPet 和 track
 					foreach (PackageData subPackage in data.SubPackages)
 					{
 						if (subPackage.PackageDataProp["name"] == "flyingPet")
@@ -150,12 +160,8 @@ namespace RHOParser
 								}
 							}
 						}
-						if (subPackage.PackageDataProp["name"] == "zeta")
-						{
-							config.region = subPackage.SubPackages[0].PackageDataProp["name"];
-							KartRho5File.Rho5File();
-							break;
-						}
+						KartRho5File.Rho5File();
+						break;
 					}
 				}
 			}
