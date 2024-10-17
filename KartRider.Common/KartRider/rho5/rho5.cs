@@ -207,9 +207,10 @@ namespace RHOParser
 							byte[] decompressedData = null;
 							if (tuple.Item1 == "etc_/itemTable.kml" || 
 							tuple.Item1 == "etc_/emblem/emblem@" + config.region + ".xml" || 
-							(tuple.Item1.Contains("flyingPet") && tuple.Item1.Contains("/param@" + config.region + ".xml")) || 
+							(tuple.Item1.Contains("flyingPet") && tuple.Item1.Contains("/param@" + config.region + ".bml")) || 
 							(tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param@" + config.region + ".xml")) || 
 							(tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param.xml")) || 
+							tuple.Item1 == "track/common/randomTrack@" + config.region + ".bml" || 
 							tuple.Item1 == "zeta_/" + config.region + "/content/itemDictionary.xml" || 
 							tuple.Item1 == "zeta_/" + config.region + "/shop/data/item.kml")
 							{
@@ -334,8 +335,12 @@ namespace RHOParser
 							if (tuple.Item1 != null && tuple.Item1.Contains("flyingPet") && tuple.Item1.Contains("/param@" + config.region + ".xml"))
 							{
 								Console.WriteLine(tuple.Item1);
+								BinaryXmlDocument bxd = new BinaryXmlDocument();
+								bxd.Read(Encoding.GetEncoding("UTF-16"), decompressedData);
+								string output = bxd.RootTag.ToString();
+								byte[] output_data = Encoding.GetEncoding("UTF-16").GetBytes(output);
 								string name = tuple.Item1.Substring(10, tuple.Item1.Length - 23);
-								using (MemoryStream stream = new MemoryStream(decompressedData))
+								using (MemoryStream stream = new MemoryStream(output_data))
 								{
 									XmlDocument flying = new XmlDocument();
 									flying.Load(stream);
@@ -403,6 +408,18 @@ namespace RHOParser
 											KartExcData.KartSpec.Add(name, kart2);
 										}
 									}
+								}
+							}
+							if (tuple.Item1 != null && tuple.Item1 == "track/common/randomTrack@" + config.region + ".bml")
+							{
+								Console.WriteLine(tuple.Item1);
+								BinaryXmlDocument bxd = new BinaryXmlDocument();
+								bxd.Read(Encoding.GetEncoding("UTF-16"), decompressedData);
+								string output = bxd.RootTag.ToString();
+								byte[] output_data = Encoding.GetEncoding("UTF-16").GetBytes(output);
+								using (MemoryStream stream = new MemoryStream(output_data))
+								{
+									KartExcData.randomTrack = XDocument.Load(stream);
 								}
 							}
 							if (tuple.Item1 != null && tuple.Item1 == "zeta_/" + config.region + "/content/itemDictionary.xml")
