@@ -357,7 +357,7 @@ namespace RHOParser
 							}
 							else if (tuple.Item1 != null && tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param.xml"))
 							{
-								string name = tuple.Item1.Substring(6, tuple.Item1.Length - 19);
+								string name = tuple.Item1.Substring(6, tuple.Item1.Length - 16);
 								bool containsTarget = tupleList.Any(tuple => tuple.Item1 == "kart_/" + name + "/param@cn.xml");
 								if (!containsTarget)
 								{
