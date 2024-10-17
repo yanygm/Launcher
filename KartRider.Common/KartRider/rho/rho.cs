@@ -131,17 +131,15 @@ namespace RHOParser
 			{
 				if (data.PackageDataProp["name"] == "KartRider")
 				{
-					// 优先查找 zeta
 					var zetaPackage = data.SubPackages.FirstOrDefault(sub => sub.PackageDataProp["name"] == "zeta");
-					if (zetaPackage != null)
+					if (config.region != zetaPackage.SubPackages[0].PackageDataProp["name"])
 					{
 						config.region = zetaPackage.SubPackages[0].PackageDataProp["name"];
-						Console.WriteLine(config.region);
+						Console.WriteLine(zetaPackage.SubPackages[0].PackageDataProp["name"]);
+						KartRho5File.Rho5File();
 						Dump(data, currentPath, args);
 						return;
 					}
-
-					// 如果没有 zeta，再查找 flyingPet 和 track
 					foreach (PackageData subPackage in data.SubPackages)
 					{
 						if (subPackage.PackageDataProp["name"] == "flyingPet")
@@ -161,8 +159,6 @@ namespace RHOParser
 								}
 							}
 						}
-						KartRho5File.Rho5File();
-						break;
 					}
 				}
 			}
