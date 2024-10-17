@@ -152,24 +152,9 @@ namespace RHOParser
 						}
 						if (subPackage.PackageDataProp["name"] == "zeta")
 						{
-							foreach (PackageData zeta in subPackage.SubPackages)
-							{
-								if (zeta.PackageDataProp["name"] == "cn")
-								{
-									config.region = "cn";
-									KartRho5File.Rho5File();
-								}
-								else if (zeta.PackageDataProp["name"] == "kr")
-								{
-									config.region = "kr";
-									KartRho5File.Rho5File();
-								}
-								else if (zeta.PackageDataProp["name"] == "tw")
-								{
-									config.region = "tw";
-									KartRho5File.Rho5File();
-								}
-							}
+							config.region = subPackage.SubPackages[0].PackageDataProp["name"];
+							KartRho5File.Rho5File();
+							break;
 						}
 					}
 				}
