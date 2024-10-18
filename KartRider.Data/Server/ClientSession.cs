@@ -2038,8 +2038,8 @@ namespace KartRider
 								outPacket.WriteInt(0);
 							}
 							outPacket.WriteByte(0);
-							outPacket.WriteEndPoint(IPAddress.Parse(RouterListener.forceConnect), 39311);
-							outPacket.WriteEndPoint(IPAddress.Parse(RouterListener.forceConnect), 39312);
+							outPacket.WriteEndPoint(IPAddress.Parse(RouterListener.port.ToString()), 39311);
+							outPacket.WriteEndPoint(IPAddress.Parse(RouterListener.port.ToString()), 39312);
 							outPacket.WriteInt(0);
 							outPacket.WriteString("");
 							outPacket.WriteInt(0);

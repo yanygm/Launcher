@@ -155,8 +155,12 @@ namespace KartRider
 					SetGameOption.Version = ushort.Parse(MinorVersion.Text);
 					SetGameOption.Save_SetGameOption();
 				}
+				File.Delete(@"KartRider.xml");
+				string[] text1 = new string[] { "<?xml version='1.0' encoding='UTF-16'?>\r\n<config>\r\n\t<server addr='127.0.0.1:", RouterListener.port.ToString(), "'/>\r\n\t<NgsOff/>\r\n</config>" };
+				File.WriteAllText(@"KartRider.xml", string.Concat(text1));
 				this.profilePath = Path.Combine(str, "launcher.xml");
 				Console.WriteLine("Process: {0}", this.kartRiderDirectory + "\\" + Launcher.KartRider);
+				Console.WriteLine("Server: {0}", this.kartRiderDirectory + "\\KartRider.xml");
 				Console.WriteLine("Profile: {0}", this.profilePath);
 				RouterListener.Start();
 			}
@@ -179,9 +183,6 @@ namespace KartRider
 					Start_Button.Enabled = true;
 					Launcher.GetKart = false;
 					Launcher.Options = false;
-					File.Delete("KartRider.xml");
-					string[] text1 = new string[] { "<?xml version='1.0' encoding='UTF-16'?>\r\n<config>\r\n\t<server addr='", RouterListener.sIP, ":", RouterListener.port.ToString(), "'/>\r\n\t<NgsOff/>\r\n</config>" };
-					File.WriteAllText(@"KartRider.xml", string.Concat(text1));
 					string str = this.profilePath;
 					string[] text2 = new string[] { "<?xml version='1.0' encoding='UTF-16'?>\r\n<profile>\r\n<username>", SetRider.UserID, "</username>\r\n</profile>" };
 					File.WriteAllText(str, string.Concat(text2));
