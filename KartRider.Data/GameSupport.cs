@@ -26,6 +26,7 @@ namespace KartRider
 			}
 			RouterListener.MySession.Client._RIV = first_val ^ second_val;
 			RouterListener.MySession.Client._SIV = first_val ^ second_val;
+			File.Delete(@"KartRider.xml");
 		}
 
 		public static void OnDisconnect()
