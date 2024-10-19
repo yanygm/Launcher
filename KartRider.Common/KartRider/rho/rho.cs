@@ -15,6 +15,8 @@ using Set_Data;
 using System.Xml;
 using Ionic.Zlib;
 using Microsoft.VisualBasic.ApplicationServices;
+using KartRider;
+using KartRider.Common.Utilities;
 
 namespace RHOParser
 {
@@ -304,18 +306,18 @@ namespace RHOParser
 					Console.WriteLine(Path.Combine(dirname.Replace("DataRaw\\", ""), keyValuePair.Key));
 					using (MemoryStream stream = new MemoryStream(numArray))
 					{
-						XDocument trackLocale = new XDocument();
-						KartExcData.randomTrack = XDocument.Load(stream);
-						XmlNodeList bodyParams = doc.GetElementsByTagName("kartBody");
-						KartExcData.dictionary = new List<short>();
-						if (bodyParams.Count > 0)
+						XmlDocument trackLocale = new XmlDocument();
+						trackLocale.Load(stream);
+						XmlNodeList trackParams = trackLocale.GetElementsByTagName("track");
+						KartExcData.track = new Dictionary<uint, string>();
+						if (trackParams.Count > 0)
 						{
-							foreach (XmlNode xn in bodyParams)
+							foreach (XmlNode xn in trackParams)
 							{
 								XmlElement xe = (XmlElement)xn;
-								short id = short.Parse(xe.GetAttribute("id"));
-								short body = short.Parse(xe.GetAttribute("track"));
-								KartExcData.track.Add(id);
+								string track = xe.GetAttribute("id");
+								uint id = Adler32Helper.GenerateAdler32_UNICODE(track, 0);
+								KartExcData.track.Add(id, track);
 							}
 						}
 					}
@@ -331,18 +333,18 @@ namespace RHOParser
 					Console.WriteLine(Path.Combine(dirname.Replace("DataRaw\\", ""), keyValuePair.Key));
 					using (MemoryStream stream = new MemoryStream(output_data))
 					{
-						XDocument trackLocale = new XDocument();
-						KartExcData.randomTrack = XDocument.Load(stream);
-						XmlNodeList bodyParams = doc.GetElementsByTagName("kartBody");
-						KartExcData.dictionary = new List<short>();
-						if (bodyParams.Count > 0)
+						XmlDocument trackLocale = new XmlDocument();
+						trackLocale.Load(stream);
+						XmlNodeList trackParams = trackLocale.GetElementsByTagName("track");
+						KartExcData.track = new Dictionary<uint, string>();
+						if (trackParams.Count > 0)
 						{
-							foreach (XmlNode xn in bodyParams)
+							foreach (XmlNode xn in trackParams)
 							{
 								XmlElement xe = (XmlElement)xn;
-								short id = short.Parse(xe.GetAttribute("id"));
-								short body = short.Parse(xe.GetAttribute("track"));
-								KartExcData.track.Add(id);
+								string track = xe.GetAttribute("id");
+								uint id = Adler32Helper.GenerateAdler32_UNICODE(track, 0);
+								KartExcData.track.Add(id, track);
 							}
 						}
 					}

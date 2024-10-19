@@ -6,7 +6,6 @@ using System.IO;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
-using KartRider_TrackName;
 using ExcData;
 using Set_Data;
 using RiderData;
@@ -1035,7 +1034,11 @@ namespace KartRider
 						StartGameData.StartTimeAttack_TimaAttackMpdeType = iPacket.ReadByte();
 						StartGameData.StartTimeAttack_TimaAttackMpde = iPacket.ReadInt();
 						StartGameData.StartTimeAttack_RandomTrackGameType = iPacket.ReadByte();
-						TrackName trackName = (TrackName)StartGameData.StartTimeAttack_Track;
+						string trackName = StartGameData.StartTimeAttack_Track.ToString();
+						if (KartExcData.track.ContainsKey(StartGameData.StartTimeAttack_Track))
+						{
+							trackName = KartExcData.track[StartGameData.StartTimeAttack_Track];
+						}
 						if (StartGameData.StartTimeAttack_TimaAttackMpdeType == 1)
 						{
 							SetRider.Lucci -= 1000;
@@ -1072,7 +1075,11 @@ namespace KartRider
 						}
 						SetRider.RP += GameType.TimeAttack_RP;
 						SetRider.Lucci += GameType.TimeAttack_Lucci;
-						TrackName trackName = (TrackName)StartGameData.StartTimeAttack_Track;
+						string trackName = StartGameData.StartTimeAttack_Track.ToString();
+						if (KartExcData.track.ContainsKey(StartGameData.StartTimeAttack_Track))
+						{
+							trackName = KartExcData.track[StartGameData.StartTimeAttack_Track];
+						}
 						Console.WriteLine("FinishTimeAttack: {0} / {1} / {2} / {3} / {4}:{5}:{6}", GameType.RewardType, GameType.TimeAttack_RP, GameType.TimeAttack_Lucci, trackName, GameType.min, GameType.sec, GameType.mil);
 						using (OutPacket outPacket = new OutPacket("PrFinishTimeAttack"))
 						{
@@ -1093,7 +1100,11 @@ namespace KartRider
 						int Lucci = iPacket.ReadInt();
 						int TimeAttack_StartTicks = iPacket.ReadInt();
 						uint Track = iPacket.ReadUInt();
-						TrackName trackName = (TrackName)Track;
+						string trackName = Track.ToString();
+						if (KartExcData.track.ContainsKey(Track))
+						{
+							trackName = KartExcData.track[Track];
+						}
 						Console.WriteLine("RewardTimeAttack : ResultType: {0}, RP: {1}, Lucci: {2}, Track: {3}", RewardType, RP, Lucci, trackName);
 						if (RewardType == 0)
 						{
@@ -2041,7 +2052,7 @@ namespace KartRider
 							outPacket.WriteEndPoint(IPAddress.Parse(RouterListener.port.ToString()), 39311);
 							outPacket.WriteEndPoint(IPAddress.Parse(RouterListener.port.ToString()), 39312);
 							outPacket.WriteInt(0);
-							outPacket.WriteString("");
+							outPacket.WriteInt(0);
 							outPacket.WriteInt(0);
 							outPacket.WriteByte(1);
 							outPacket.WriteString("content");
@@ -2049,10 +2060,91 @@ namespace KartRider
 							outPacket.WriteInt(1);
 							outPacket.WriteString("cc");
 							outPacket.WriteString(SessionGroup.Service);
+							outPacket.WriteInt(7);
+							outPacket.WriteString("content");
+							outPacket.WriteInt(0);
+							outPacket.WriteInt(2);
+							outPacket.WriteString("name");
+							outPacket.WriteString("dynamicPpl");
+							outPacket.WriteString("enable");
+							outPacket.WriteString("false");
+							outPacket.WriteInt(1);
+							outPacket.WriteString("region");
+							outPacket.WriteInt(0);
+							outPacket.WriteInt(1);
+							outPacket.WriteString("szId");
+							outPacket.WriteString(SessionGroup.usLocale.ToString());
+							outPacket.WriteInt(0);
+							outPacket.WriteString("content");
+							outPacket.WriteInt(0);
+							outPacket.WriteInt(3);
+							outPacket.WriteString("name");
+							outPacket.WriteString("endingBanner");
+							outPacket.WriteString("enable");
+							outPacket.WriteString("false");
+							outPacket.WriteString("value");
+							outPacket.WriteString("http://popkart.tiancity.com/homepage/endbanner.html");
+                            outPacket.WriteInt(0);
+                            outPacket.WriteString("content");
+                            outPacket.WriteInt(0);
+                            outPacket.WriteInt(2);
+                            outPacket.WriteString("name");
+                            outPacket.WriteString("clubSystem");
+                            outPacket.WriteString("enable");
+                            outPacket.WriteString("false");
+                            outPacket.WriteInt(0);
+                            outPacket.WriteString("content");
+                            outPacket.WriteInt(0);
+                            outPacket.WriteInt(2);
+                            outPacket.WriteString("name");
+                            outPacket.WriteString("kartPass");
+                            outPacket.WriteString("enable");
+                            outPacket.WriteString("false");
+                            outPacket.WriteInt(0);
+                            outPacket.WriteString("content");
+							outPacket.WriteInt(0);
+							outPacket.WriteInt(3);
+							outPacket.WriteString("name");
+							outPacket.WriteString("multiplay");
+							outPacket.WriteString("enable");
+							outPacket.WriteString("false");
+							outPacket.WriteString("visible");
+							outPacket.WriteString("false");
+							outPacket.WriteInt(0);
+							outPacket.WriteString("content");
+							outPacket.WriteInt(0);
+							outPacket.WriteInt(3);
+							outPacket.WriteString("name");
+							outPacket.WriteString("shop");
+							outPacket.WriteString("enable");
+							outPacket.WriteString("false");
+							outPacket.WriteString("visible");
+							outPacket.WriteString("false");
+							outPacket.WriteInt(0);
+							outPacket.WriteString("content");
+							outPacket.WriteInt(0);
+							outPacket.WriteInt(3);
+							outPacket.WriteString("name");
+							outPacket.WriteString("themeXyy");
+							outPacket.WriteString("enable");
+							outPacket.WriteString("true");
+							outPacket.WriteString("visible");
+							outPacket.WriteString("true");
+							outPacket.WriteInt(0);
+							outPacket.WriteString("content");
+							outPacket.WriteInt(0);
+							outPacket.WriteInt(3);
+							outPacket.WriteString("name");
+							outPacket.WriteString("themeKorea");
+							outPacket.WriteString("enable");
+							outPacket.WriteString("true");
+							outPacket.WriteString("visible");
+							outPacket.WriteString("true");
 							outPacket.WriteInt(0);
 							outPacket.WriteByte(0);
 							outPacket.WriteByte(SetGameOption.Set_screen);
 							outPacket.WriteByte(SetRider.IdentificationType);
+							outPacket.WriteHexString("EA 2F A7 17");
 							RouterListener.MySession.Client.Send(outPacket);
 						}
 						return;

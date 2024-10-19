@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 using KartRider;
-using KartRider_TrackName;
+using ExcData;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace Set_Data
 {
@@ -37,7 +38,11 @@ namespace Set_Data
 
 		public static void Save_RecordTimeAttack()
 		{
-			TrackName trackName = (TrackName)StartGameData.StartTimeAttack_Track;
+			string trackName = StartGameData.StartTimeAttack_Track.ToString();
+			if (KartExcData.track.ContainsKey(StartGameData.StartTimeAttack_Track))
+			{
+				trackName = KartExcData.track[StartGameData.StartTimeAttack_Track];
+			}
 			using (StreamWriter streamWriter = new StreamWriter("TimeAttack.log", true))
 			{
 				streamWriter.WriteLine("[{0}] SpeedType:{1}, GameType:{2}, Kart:{3}, FlyingPet:{4}, ResultType:{5}, RP:{6}, Lucci:{7}, Track:{8}, Record:{9}:{10}:{11}", DateTime.Now, StartGameData.StartTimeAttack_SpeedType, StartGameData.StartTimeAttack_GameType, StartGameData.Kart_id, StartGameData.FlyingPet_id, GameType.RewardType, GameType.TimeAttack_RP, GameType.TimeAttack_Lucci, trackName, GameType.min, GameType.sec, GameType.mil);

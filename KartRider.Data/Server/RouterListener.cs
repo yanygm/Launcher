@@ -39,7 +39,8 @@ namespace KartRider
 				Socket clientSocket = RouterListener.Listener.EndAcceptSocket(ar);
 				RouterListener.ForceConnect = RouterListener.sIP;
 				RouterListener.MySession = new SessionGroup(clientSocket, null);
-				System.Threading.Thread.Sleep(3000);
+				clientSocket.ReceiveTimeout = 5000;
+				System.Threading.Thread.Sleep(5000);
 				IPEndPoint clientEndPoint = clientSocket.RemoteEndPoint as IPEndPoint;
 				if (clientEndPoint != null)
 				{
@@ -61,8 +62,6 @@ namespace KartRider
 		public static void Start()
 		{
 			Console.WriteLine("Load server IP : {0}:{1}", (object)RouterListener.sIP, (object)RouterListener.port);
-			//Console.WriteLine(Adler32Helper.GenerateAdler32_UNICODE("china_R12", 0));
-			//Console.WriteLine(Adler32Helper.GenerateAdler32_ASCII("PrEnterShopPacket", 0));
 			RouterListener.Listener = new TcpListener(IPAddress.Parse(RouterListener.sIP), RouterListener.port);
 			RouterListener.Listener.Start();
 			RouterListener.Listener.BeginAcceptSocket(new AsyncCallback(RouterListener.OnAcceptSocket), (object)null);
