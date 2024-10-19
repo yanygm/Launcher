@@ -39,7 +39,6 @@ namespace KartRider
 				Socket clientSocket = RouterListener.Listener.EndAcceptSocket(ar);
 				RouterListener.ForceConnect = RouterListener.sIP;
 				RouterListener.MySession = new SessionGroup(clientSocket, null);
-				clientSocket.ReceiveTimeout = 5000;
 				System.Threading.Thread.Sleep(5000);
 				IPEndPoint clientEndPoint = clientSocket.RemoteEndPoint as IPEndPoint;
 				if (clientEndPoint != null)
