@@ -26,6 +26,7 @@ namespace ExcData
 		public static XDocument randomTrack = new XDocument();
 		public static List<short> emblem = new List<short>();
 		public static List<short> dictionary = new List<short>();
+		public static List<string> track = new List<string>();
 
 		public static List<short> character = new List<short>();
 		public static List<short> color = new List<short>();

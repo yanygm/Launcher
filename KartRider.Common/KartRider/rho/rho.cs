@@ -297,6 +297,56 @@ namespace RHOParser
 						KartExcData.randomTrack = XDocument.Load(stream);
 					}
 				}
+				if (keyValuePair.Key == "trackLocale@" + config.region + ".xml")
+				{
+					string[] parts = dirname.Split(@"\");
+					string lastPart = parts[parts.Length - 1];
+					Console.WriteLine(Path.Combine(dirname.Replace("DataRaw\\", ""), keyValuePair.Key));
+					using (MemoryStream stream = new MemoryStream(numArray))
+					{
+						XDocument trackLocale = new XDocument();
+						KartExcData.randomTrack = XDocument.Load(stream);
+						XmlNodeList bodyParams = doc.GetElementsByTagName("kartBody");
+						KartExcData.dictionary = new List<short>();
+						if (bodyParams.Count > 0)
+						{
+							foreach (XmlNode xn in bodyParams)
+							{
+								XmlElement xe = (XmlElement)xn;
+								short id = short.Parse(xe.GetAttribute("id"));
+								short body = short.Parse(xe.GetAttribute("track"));
+								KartExcData.track.Add(id);
+							}
+						}
+					}
+				}
+				else if (keyValuePair.Key == "trackLocale@" + config.region + ".bml")
+				{
+					BinaryXmlDocument bxd = new BinaryXmlDocument();
+					bxd.Read(Encoding.GetEncoding("UTF-16"), numArray);
+					string output = bxd.RootTag.ToString();
+					byte[] output_data = Encoding.GetEncoding("UTF-16").GetBytes(output);
+					string[] parts = dirname.Split(@"\");
+					string lastPart = parts[parts.Length - 1];
+					Console.WriteLine(Path.Combine(dirname.Replace("DataRaw\\", ""), keyValuePair.Key));
+					using (MemoryStream stream = new MemoryStream(output_data))
+					{
+						XDocument trackLocale = new XDocument();
+						KartExcData.randomTrack = XDocument.Load(stream);
+						XmlNodeList bodyParams = doc.GetElementsByTagName("kartBody");
+						KartExcData.dictionary = new List<short>();
+						if (bodyParams.Count > 0)
+						{
+							foreach (XmlNode xn in bodyParams)
+							{
+								XmlElement xe = (XmlElement)xn;
+								short id = short.Parse(xe.GetAttribute("id"));
+								short body = short.Parse(xe.GetAttribute("track"));
+								KartExcData.track.Add(id);
+							}
+						}
+					}
+				}
 				if (keyValuePair.Key == "param@" + config.region + ".bml")
 				{
 					BinaryXmlDocument bxd = new BinaryXmlDocument();
