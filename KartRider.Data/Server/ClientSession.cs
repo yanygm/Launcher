@@ -2,7 +2,6 @@
 using KartRider.Common.Utilities;
 using KartRider.IO.Packet;
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
