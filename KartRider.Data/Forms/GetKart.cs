@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Xml;
 using ExcData;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace KartRider
 {
@@ -43,7 +44,7 @@ namespace KartRider
 							outPacket.WriteByte(1);
 							outPacket.WriteInt(1);
 							outPacket.WriteShort(GetKart.Item_Type);
-							outPacket.WriteShort(GetKart.Item_Code);
+							outPacket.WriteShort(itemCode);
 							outPacket.WriteShort(sn);
 							outPacket.WriteShort(1);//수량
 							outPacket.WriteShort(0);
@@ -52,6 +53,13 @@ namespace KartRider
 							outPacket.WriteShort(0);
 							outPacket.WriteShort(0);
 							RouterListener.MySession.Client.Send(outPacket);
+						}
+						var existingItem = KartExcData.NewKart.FirstOrDefault(list => list[0] == itemCode && list[1] == sn);
+						if (existingItem == null)
+						{
+							var newList = new List<short> { itemCode, sn };
+							KartExcData.NewKart.Add(newList);
+							Save_NewKartList(KartExcData.NewKart);
 						}
 					}
 					else
@@ -97,6 +105,28 @@ namespace KartRider
 			if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))         
 			{
 				e.Handled = true;
+			}
+		}
+
+		public static void Save_NewKartList(List<List<short>> NewKart)
+		{
+			File.Delete(@"Profile\NewKart.xml");
+			XmlTextWriter writer = new XmlTextWriter(@"Profile\NewKart.xml", System.Text.Encoding.UTF8);
+			writer.Formatting = Formatting.Indented;
+			writer.WriteStartDocument();
+			writer.WriteStartElement("NewKart");
+			writer.WriteEndElement();
+			writer.Close();
+			for (var i = 0; i < NewKart.Count; i++)
+			{
+				XmlDocument xmlDoc = new XmlDocument();
+				xmlDoc.Load(@"Profile\NewKart.xml");
+				XmlNode root = xmlDoc.SelectSingleNode("NewKart");
+				XmlElement xe1 = xmlDoc.CreateElement("Kart");
+				xe1.SetAttribute("id", NewKart[i][0].ToString());
+				xe1.SetAttribute("sn", NewKart[i][1].ToString());
+				root.AppendChild(xe1);
+				xmlDoc.Save(@"Profile\NewKart.xml");
 			}
 		}
 	}

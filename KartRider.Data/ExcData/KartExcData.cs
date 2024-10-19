@@ -17,6 +17,7 @@ namespace ExcData
 		public static List<List<short>> PlantList = new List<List<short>>();
 		public static List<List<short>> LevelList = new List<List<short>>();
 		public static List<List<short>> PartsList = new List<List<short>>();
+		public static List<List<short>> NewKart = new List<List<short>>();
 
 		public static Dictionary<int, string> KartName = new Dictionary<int, string>();
 		public static Dictionary<string, XmlDocument> KartSpec = new Dictionary<string, XmlDocument>();

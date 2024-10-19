@@ -8,20 +8,20 @@ namespace KartRider
 	{
 		public static void PcFirstMessage()
 		{
-			uint first_val = 3595571486;
-			uint second_val = 2168420743;
+			uint first_val = 418454259;
+			uint second_val = 3259911425;
 			using (OutPacket outPacket = new OutPacket("PcFirstMessage"))
 			{
 				outPacket.WriteUShort(SessionGroup.usLocale);
 				outPacket.WriteUShort(1);
 				outPacket.WriteUShort(SetGameOption.Version);
-				outPacket.WriteString("http://kartupdate.tiancity.cn/patch/ATYGSTKPEWUHSKA");
+				outPacket.WriteString("http://kartupdate.tiancity.cn/patch/TPWFPZJPVQPLNWT");
 				outPacket.WriteUInt(first_val);
 				outPacket.WriteUInt(second_val);
 				outPacket.WriteByte(SessionGroup.nClientLoc);
-				outPacket.WriteString("+B1K8NAOvJd3cXFieRWTkRNj2rlv2qVmALSUdXFpNl0=");
-				outPacket.WriteHexString("00 00 00 00 00 00 00 00 0F 00 00 00 00 00 00 00 00 2E 31 2E 31 37 2E 36 00 00 00 00 00 00 00");
-				outPacket.WriteString("TwKtPFLx+3AuKg5PFa021r3hKyFDK2sFBzQJJCI26wA=");
+				outPacket.WriteString("9wk/NSpInbhNJGTCHOvYH76HjtBwlUA7QKaxZlqwWu0=");
+				outPacket.WriteBytes(new byte[31]);
+				outPacket.WriteString("92Jw/2KaOSER68ywYfQoploG2FJgmhqCCBTSXaob5e8=");
 				RouterListener.MySession.Client.Send(outPacket);
 			}
 			RouterListener.MySession.Client._RIV = first_val ^ second_val;

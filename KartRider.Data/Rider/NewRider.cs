@@ -64,6 +64,7 @@ namespace RiderData
 			KartExcData.Level_ExcData();
 			KartExcData.Parts_ExcData();
 			NewRider.kart();
+			NewRider.NewKart();
 			NewRider.NewRiderData();//라이더 인식
 			Launcher.OpenGetItem = true;
 		}
@@ -199,6 +200,28 @@ namespace RiderData
 				*/
 			}
 			//LoRpGetRiderItemPacket(3, item);
+		}
+
+		public static void NewKart()
+		{
+			foreach (var Kart in KartExcData.NewKart)
+			{
+				using (OutPacket outPacket = new OutPacket("PrRequestKartInfoPacket"))
+				{
+					outPacket.WriteByte(1);
+					outPacket.WriteInt(1);
+					outPacket.WriteShort(3);
+					outPacket.WriteShort(Kart[0]);
+					outPacket.WriteShort(Kart[1]);
+					outPacket.WriteShort(1);//수량
+					outPacket.WriteShort(0);
+					outPacket.WriteShort(-1);
+					outPacket.WriteShort(0);
+					outPacket.WriteShort(0);
+					outPacket.WriteShort(0);
+					RouterListener.MySession.Client.Send(outPacket);
+				}
+			}
 		}
 
 		public static void color()
