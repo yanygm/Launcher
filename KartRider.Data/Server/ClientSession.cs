@@ -2223,7 +2223,10 @@ namespace KartRider
 				{
 					using (OutPacket outPacket = new OutPacket("PrCnAuthenLogin"))
 					{
-						outPacket.WriteHexString("01 00 00 00 80 00 00 00 6C 00 70 00 70 00 69 00 63 00 65 00 6B 00 65 00 64 00 6B 00 67 00 6A 00 64 00 71 00 6D 00 6E 00 63 00 64 00 64 00 70 00 64 00 64 00 65 00 63 00 64 00 6F 00 67 00 6A 00 70 00 70 00 71 00 68 00 72 00 67 00 68 00 71 00 69 00 66 00 71 00 6A 00 6D 00 6A 00 68 00 63 00 66 00 69 00 6F 00 72 00 65 00 63 00 70 00 6D 00 6F 00 63 00 6B 00 64 00 6C 00 6E 00 67 00 6C 00 6F 00 6F 00 72 00 68 00 71 00 6D 00 65 00 6B 00 68 00 72 00 70 00 64 00 70 00 65 00 6A 00 6C 00 67 00 6E 00 63 00 6C 00 6B 00 6C 00 72 00 6D 00 64 00 64 00 68 00 6F 00 70 00 72 00 63 00 71 00 6B 00 6E 00 72 00 66 00 6A 00 6F 00 6C 00 69 00 64 00 6A 00 68 00 6E 00 64 00 65 00 6A 00 69 00 6F 00 6B 00 66 00 6A 00 6F 00 6F 00 67 00 71 00 72 00 67 00 6C 00 64 00 67 00 69 00 67 00 71 00 6C 00 68 00 70 00 70 00 00 22 00 00 00 68 00 74 00 74 00 70 00 73 00 3A 00 2F 00 2F 00 77 00 77 00 77 00 2E 00 74 00 69 00 61 00 6E 00 63 00 69 00 74 00 79 00 2E 00 63 00 6F 00 6D 00 2F 00 61 00 67 00 72 00 65 00 65 00 6D 00 65 00 6E 00 74 00");
+						outPacket.WriteInt(1);
+						outPacket.WriteString("lppicekedkgjdqmncddpddecdogjppqhrghqifqjmjhcfiorecpmockdlngloorhqmekhrpdpejlgnclklrmddhoprcqknrfjolidjhndejiokfjoogqrgldgigqlhpp");
+						outPacket.WriteByte(0);
+						outPacket.WriteString("https://www.tiancity.com/agreement");
 						this.Parent.Client.Send(outPacket);
 					}
 					return;
