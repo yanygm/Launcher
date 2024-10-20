@@ -16,6 +16,7 @@ using KartLibrary.Data;
 using KartRider.IO.Packet;
 using System.Xml.Linq;
 using System.Linq;
+using System.ComponentModel;
 
 namespace RHOParser
 {
@@ -39,16 +40,19 @@ namespace RHOParser
                     {
                         Console.WriteLine(fullName);
                         string name = fullName.Substring(10, fullName.Length - 23);
-                        byte[] data = packFileInfo.GetData();
-                        BinaryXmlDocument bxd = new BinaryXmlDocument();
-                        bxd.Read(Encoding.GetEncoding("UTF-16"), data);
-                        string output_bml = bxd.RootTag.ToString();
-                        byte[] output_data = Encoding.GetEncoding("UTF-16").GetBytes(output_bml);
-                        using (MemoryStream stream = new MemoryStream(output_data))
+                        if (!(KartExcData.flyingSpec.ContainsKey(name)))
                         {
-                            XmlDocument flying = new XmlDocument();
-                            flying.Load(stream);
-                            KartExcData.flyingSpec.Add(name, flying);
+                            byte[] data = packFileInfo.GetData();
+                            BinaryXmlDocument bxd = new BinaryXmlDocument();
+                            bxd.Read(Encoding.GetEncoding("UTF-16"), data);
+                            string output_bml = bxd.RootTag.ToString();
+                            byte[] output_data = Encoding.GetEncoding("UTF-16").GetBytes(output_bml);
+                            using (MemoryStream stream = new MemoryStream(output_data))
+                            {
+                                XmlDocument flying = new XmlDocument();
+                                flying.Load(stream);
+                                KartExcData.flyingSpec.Add(name, flying);
+                            }
                         }
                     }
                     if (fullName == "track/common/randomTrack@" + config.region + ".bml")
@@ -80,7 +84,10 @@ namespace RHOParser
                                     XmlElement xe = (XmlElement)xn;
                                     string track = xe.GetAttribute("id");
                                     uint id = Adler32Helper.GenerateAdler32_UNICODE(track, 0);
-                                    KartExcData.track.Add(id, track);
+                                    if (!(KartExcData.track.ContainsKey(id)))
+                                    {
+                                        KartExcData.track.Add(id, track);
+                                    }
                                 }
                             }
                         }
@@ -105,7 +112,10 @@ namespace RHOParser
                                     XmlElement xe = (XmlElement)xn;
                                     string track = xe.GetAttribute("id");
                                     uint id = Adler32Helper.GenerateAdler32_UNICODE(track, 0);
-                                    KartExcData.track.Add(id, track);
+                                    if (!(KartExcData.track.ContainsKey(id)))
+                                    {
+                                        KartExcData.track.Add(id, track);
+                                    }
                                 }
                             }
                         }
@@ -126,7 +136,10 @@ namespace RHOParser
                                     XmlElement xe = (XmlElement)xn;
                                     int id = int.Parse(xe.GetAttribute("id"));
                                     string name = xe.GetAttribute("name");
-                                    KartExcData.KartName.Add(id, name);
+                                    if (!(KartExcData.KartName.ContainsKey(id)))
+                                    {
+                                        KartExcData.KartName.Add(id, name);
+                                    }
                                 }
                             }
                             XmlNodeList flying = doc.GetElementsByTagName("flyingPet");
@@ -137,7 +150,10 @@ namespace RHOParser
                                     XmlElement xe = (XmlElement)xn;
                                     int id = int.Parse(xe.GetAttribute("id"));
                                     string name = xe.GetAttribute("name");
-                                    KartExcData.flyingName.Add(id, name);
+                                    if (!(KartExcData.flyingName.ContainsKey(id)))
+                                    {
+                                        KartExcData.flyingName.Add(id, name);
+                                    }
                                 }
                             }
                         }
@@ -151,14 +167,19 @@ namespace RHOParser
                             XmlDocument doc = new XmlDocument();
                             doc.Load(stream);
                             XmlNodeList bodyParams = doc.GetElementsByTagName("emblem");
-                            KartExcData.emblem = new List<short>();
                             if (bodyParams.Count > 0)
                             {
                                 foreach (XmlNode xn in bodyParams)
                                 {
                                     XmlElement xe = (XmlElement)xn;
-                                    short id = short.Parse(xe.GetAttribute("id"));
-                                    KartExcData.emblem.Add(id);
+                                    short id;
+                                    if (short.TryParse(xe.GetAttribute("id"), out id))
+                                    {
+                                        if (!KartExcData.emblem.Contains(id))
+                                        {
+                                            KartExcData.emblem.Add(id);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -168,37 +189,8 @@ namespace RHOParser
                         Console.WriteLine(fullName);
                         byte[] data = ReplaceBytes(packFileInfo.GetData());
                         string name = fullName.Substring(6, fullName.Length - 19);
-                        if (data[2] == 13 && data[3] == 0 && data[4] == 10 && data[5] == 0)
+                        if (!(KartExcData.KartSpec.ContainsKey(name)))
                         {
-                            byte[] newBytes = new byte[data.Length - 4];
-                            newBytes[0] = 255;
-                            newBytes[1] = 254;
-                            Array.Copy(data, 6, newBytes, 2, data.Length - 6);
-                            using (MemoryStream stream = new MemoryStream(newBytes))
-                            {
-                                XmlDocument kart1 = new XmlDocument();
-                                kart1.Load(stream);
-                                KartExcData.KartSpec.Add(name, kart1);
-                            }
-                        }
-                        else
-                        {
-                            using (MemoryStream stream = new MemoryStream(data))
-                            {
-                                XmlDocument kart2 = new XmlDocument();
-                                kart2.Load(stream);
-                                KartExcData.KartSpec.Add(name, kart2);
-                            }
-                        }
-                    }
-                    if (fullName.Contains("kart_") && fullName.Contains("/param.xml"))
-                    {
-                        string name = fullName.Substring(6, fullName.Length - 16);
-                        byte[] data = ReplaceBytes(packFileInfo.GetData());
-                        bool containsTarget = packFolderInfo1.GetFilesInfo().Any(PackFileInfo => ReplacePath(PackFileInfo.FullName) == "kart_/" + name + "/param@" + config.region + ".xml");
-                        if (!containsTarget)
-                        {
-                            Console.WriteLine(fullName);
                             if (data[2] == 13 && data[3] == 0 && data[4] == 10 && data[5] == 0)
                             {
                                 byte[] newBytes = new byte[data.Length - 4];
@@ -223,25 +215,36 @@ namespace RHOParser
                             }
                         }
                     }
-                    if (fullName == "zeta_/" + config.region + "/content/itemDictionary.xml")
+                    if (fullName.Contains("kart_") && fullName.Contains("/param.xml"))
                     {
-                        Console.WriteLine(fullName);
-                        byte[] data = packFileInfo.GetData();
-                        using (MemoryStream stream = new MemoryStream(data))
+                        string name = fullName.Substring(6, fullName.Length - 16);
+                        byte[] data = ReplaceBytes(packFileInfo.GetData());
+                        bool containsTarget = packFolderInfo1.GetFilesInfo().Any(PackFileInfo => ReplacePath(PackFileInfo.FullName) == "kart_/" + name + "/param@" + config.region + ".xml");
+                        if (!containsTarget)
                         {
-                            XmlDocument doc = new XmlDocument();
-                            doc.Load(stream);
-                            XmlNodeList bodyParams = doc.GetElementsByTagName("kartBody");
-                            if (bodyParams.Count > 0)
+                            if (!(KartExcData.KartSpec.ContainsKey(name)))
                             {
-                                foreach (XmlNode xn in bodyParams)
+                                Console.WriteLine(fullName);
+                                if (data[2] == 13 && data[3] == 0 && data[4] == 10 && data[5] == 0)
                                 {
-                                    XmlElement xe = (XmlElement)xn;
-                                    short id = short.Parse(xe.GetAttribute("id"));
-                                    short body = short.Parse(xe.GetAttribute("kartBodyGrade"));
-                                    if (body > 10)
+                                    byte[] newBytes = new byte[data.Length - 4];
+                                    newBytes[0] = 255;
+                                    newBytes[1] = 254;
+                                    Array.Copy(data, 6, newBytes, 2, data.Length - 6);
+                                    using (MemoryStream stream = new MemoryStream(newBytes))
                                     {
-                                        KartExcData.dictionary.Add(id);
+                                        XmlDocument kart1 = new XmlDocument();
+                                        kart1.Load(stream);
+                                        KartExcData.KartSpec.Add(name, kart1);
+                                    }
+                                }
+                                else
+                                {
+                                    using (MemoryStream stream = new MemoryStream(data))
+                                    {
+                                        XmlDocument kart2 = new XmlDocument();
+                                        kart2.Load(stream);
+                                        KartExcData.KartSpec.Add(name, kart2);
                                     }
                                 }
                             }
@@ -265,151 +268,262 @@ namespace RHOParser
                                     short itemId = short.Parse(xe.GetAttribute("itemId"));
                                     if (itemCatId == 1)
                                     {
-                                        KartExcData.character.Add(itemId);
+                                        if (!(KartExcData.character.Contains(itemId)))
+                                        {
+                                            KartExcData.character.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 2)
                                     {
-                                        KartExcData.color.Add(itemId);
+                                        if (!(KartExcData.color.Contains(itemId)))
+                                        {
+                                            KartExcData.color.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 3)
                                     {
-                                        KartExcData.kart.Add(itemId);
+                                        if (!(KartExcData.kart.Contains(itemId)))
+                                        {
+                                            KartExcData.kart.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 4)
                                     {
-                                        KartExcData.plate.Add(itemId);
+                                        if (!(KartExcData.plate.Contains(itemId)))
+                                        {
+                                            KartExcData.plate.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 7)
                                     {
-                                        KartExcData.slotChanger.Add(itemId);
+                                        if (!(KartExcData.slotChanger.Contains(itemId)))
+                                        {
+                                            KartExcData.slotChanger.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 8)
                                     {
-                                        KartExcData.goggle.Add(itemId);
+                                        if (!(KartExcData.goggle.Contains(itemId)))
+                                        {
+                                            KartExcData.goggle.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 9)
                                     {
-                                        KartExcData.balloon.Add(itemId);
+                                        if (!(KartExcData.balloon.Contains(itemId)))
+                                        {
+                                            KartExcData.balloon.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 11)
                                     {
-                                        KartExcData.headBand.Add(itemId);
+                                        if (!(KartExcData.headBand.Contains(itemId)))
+                                        {
+                                            KartExcData.headBand.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 12)
                                     {
-                                        KartExcData.headPhone.Add(itemId);
+                                        if (!(KartExcData.headPhone.Contains(itemId)))
+                                        {
+                                            KartExcData.headPhone.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 13)
                                     {
-                                        KartExcData.ticket.Add(itemId);
+                                        if (!(KartExcData.ticket.Contains(itemId)))
+                                        {
+                                            KartExcData.ticket.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 14)
                                     {
-                                        KartExcData.upgradeKit.Add(itemId);
+                                        if (!(KartExcData.upgradeKit.Contains(itemId)))
+                                        {
+                                            KartExcData.upgradeKit.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 16)
                                     {
-                                        KartExcData.handGearL.Add(itemId);
+                                        if (!(KartExcData.handGearL.Contains(itemId)))
+                                        {
+                                            KartExcData.handGearL.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 18)
                                     {
-                                        KartExcData.uniform.Add(itemId);
+                                        if (!(KartExcData.uniform.Contains(itemId)))
+                                        {
+                                            KartExcData.uniform.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 20)
                                     {
-                                        KartExcData.decal.Add(itemId);
+                                        if (!(KartExcData.decal.Contains(itemId)))
+                                        {
+                                            KartExcData.decal.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 21)
                                     {
-                                        KartExcData.pet.Add(itemId);
+                                        if (!(KartExcData.pet.Contains(itemId)))
+                                        {
+                                            KartExcData.pet.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 22)
                                     {
-                                        KartExcData.initialCard.Add(itemId);
+                                        if (!(KartExcData.initialCard.Contains(itemId)))
+                                        {
+                                            KartExcData.initialCard.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 23)
                                     {
-                                        KartExcData.card.Add(itemId);
+                                        if (!(KartExcData.card.Contains(itemId)))
+                                        {
+                                            KartExcData.card.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 26)
                                     {
-                                        KartExcData.aura.Add(itemId);
+                                        if (!(KartExcData.aura.Contains(itemId)))
+                                        {
+                                            KartExcData.aura.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 27)
                                     {
-                                        KartExcData.skidMark.Add(itemId);
+                                        if (!(KartExcData.skidMark.Contains(itemId)))
+                                        {
+                                            KartExcData.skidMark.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 28)
                                     {
-                                        KartExcData.roomCard.Add(itemId);
+                                        if (!(KartExcData.roomCard.Contains(itemId)))
+                                        {
+                                            KartExcData.roomCard.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 31)
                                     {
-                                        KartExcData.ridColor.Add(itemId);
+                                        if (!(KartExcData.ridColor.Contains(itemId)))
+                                        {
+                                            KartExcData.ridColor.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 32)
                                     {
-                                        KartExcData.rpLucciBonus.Add(itemId);
+                                        if (!(KartExcData.rpLucciBonus.Contains(itemId)))
+                                        {
+                                            KartExcData.rpLucciBonus.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 37)
                                     {
-                                        KartExcData.socket.Add(itemId);
+                                        if (!(KartExcData.socket.Contains(itemId)))
+                                        {
+                                            KartExcData.socket.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 38)
                                     {
-                                        KartExcData.tune.Add(itemId);
+                                        if (!(KartExcData.tune.Contains(itemId)))
+                                        {
+                                            KartExcData.tune.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 39)
                                     {
-                                        KartExcData.resetSocket.Add(itemId);
+                                        if (!(KartExcData.resetSocket.Contains(itemId)))
+                                        {
+                                            KartExcData.resetSocket.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 43)
                                     {
-                                        KartExcData.tuneEnginePatch.Add(itemId);
+                                        if (!(KartExcData.tuneEnginePatch.Contains(itemId)))
+                                        {
+                                            KartExcData.tuneEnginePatch.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 44)
                                     {
-                                        KartExcData.tuneHandle.Add(itemId);
+                                        if (!(KartExcData.tuneHandle.Contains(itemId)))
+                                        {
+                                            KartExcData.tuneHandle.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 45)
                                     {
-                                        KartExcData.tuneWheel.Add(itemId);
+                                        if (!(KartExcData.tuneWheel.Contains(itemId)))
+                                        {
+                                            KartExcData.tuneWheel.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 46)
                                     {
-                                        KartExcData.tuneSupportKit.Add(itemId);
+                                        if (!(KartExcData.tuneSupportKit.Contains(itemId)))
+                                        {
+                                            KartExcData.tuneSupportKit.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 49)
                                     {
-                                        KartExcData.enchantProtect.Add(itemId);
+                                        if (!(KartExcData.enchantProtect.Contains(itemId)))
+                                        {
+                                            KartExcData.enchantProtect.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 52)
                                     {
-                                        KartExcData.flyingPet.Add(itemId);
+                                        if (!(KartExcData.flyingPet.Contains(itemId)))
+                                        {
+                                            KartExcData.flyingPet.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 53)
                                     {
-                                        KartExcData.enchantProtect2.Add(itemId);
+                                        if (!(KartExcData.enchantProtect2.Contains(itemId)))
+                                        {
+                                            KartExcData.enchantProtect2.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 61)
                                     {
-                                        KartExcData.tachometer.Add(itemId);
+                                        if (!(KartExcData.tachometer.Contains(itemId)))
+                                        {
+                                            KartExcData.tachometer.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 68)
                                     {
-                                        KartExcData.partsCoating.Add(itemId);
+                                        if (!(KartExcData.partsCoating.Contains(itemId)))
+                                        {
+                                            KartExcData.partsCoating.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 69)
                                     {
-                                        KartExcData.partsTailLamp.Add(itemId);
+                                        if (!(KartExcData.partsTailLamp.Contains(itemId)))
+                                        {
+                                            KartExcData.partsTailLamp.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 70)
                                     {
-                                        KartExcData.dye.Add(itemId);
+                                        if (!(KartExcData.dye.Contains(itemId)))
+                                        {
+                                            KartExcData.dye.Add(itemId);
+                                        }
                                     }
                                     else if (itemCatId == 71)
                                     {
-                                        KartExcData.slotBg.Add(itemId);
+                                        if (!(KartExcData.slotBg.Contains(itemId)))
+                                        {
+                                            KartExcData.slotBg.Add(itemId);
+                                        }
                                     }
                                 }
                             }
