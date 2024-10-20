@@ -211,6 +211,8 @@ namespace RHOParser
 							(tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param@" + config.region + ".xml")) || 
 							(tuple.Item1.Contains("kart_") && tuple.Item1.Contains("/param.xml")) || 
 							tuple.Item1 == "track/common/randomTrack@" + config.region + ".bml" || 
+							tuple.Item1 == "track/common/trackLocale@" + config.region + ".xml" || 
+							tuple.Item1 == "track/common/trackLocale@" + config.region + ".bml" || 
 							tuple.Item1 == "zeta_/" + config.region + "/content/itemDictionary.xml" || 
 							tuple.Item1 == "zeta_/" + config.region + "/shop/data/item.kml")
 							{
@@ -407,6 +409,50 @@ namespace RHOParser
 									KartExcData.randomTrack = XDocument.Load(stream);
 								}
 							}
+							if (tuple.Item1 != null && tuple.Item1 == "track/common/trackLocale@" + config.region + ".xml")
+							{
+								Console.WriteLine(tuple.Item1);
+								using (MemoryStream stream = new MemoryStream(decompressedData))
+								{
+									XmlDocument trackLocale = new XmlDocument();
+									trackLocale.Load(stream);
+									XmlNodeList trackParams = trackLocale.GetElementsByTagName("track");
+									if (trackParams.Count > 0)
+									{
+										foreach (XmlNode xn in trackParams)
+										{
+											XmlElement xe = (XmlElement)xn;
+											string track = xe.GetAttribute("id");
+											uint id = Adler32Helper.GenerateAdler32_UNICODE(track, 0);
+											KartExcData.track.Add(id, track);
+										}
+									}
+								}
+							}
+							else if (tuple.Item1 != null && tuple.Item1 == "track/common/trackLocale@" + config.region + ".bml")
+							{
+								Console.WriteLine(tuple.Item1);
+								BinaryXmlDocument bxd = new BinaryXmlDocument();
+								bxd.Read(Encoding.GetEncoding("UTF-16"), decompressedData);
+								string output = bxd.RootTag.ToString();
+								byte[] output_data = Encoding.GetEncoding("UTF-16").GetBytes(output);
+								using (MemoryStream stream = new MemoryStream(output_data))
+								{
+									XmlDocument trackLocale = new XmlDocument();
+									trackLocale.Load(stream);
+									XmlNodeList trackParams = trackLocale.GetElementsByTagName("track");
+									if (trackParams.Count > 0)
+									{
+										foreach (XmlNode xn in trackParams)
+										{
+											XmlElement xe = (XmlElement)xn;
+											string track = xe.GetAttribute("id");
+											uint id = Adler32Helper.GenerateAdler32_UNICODE(track, 0);
+											KartExcData.track.Add(id, track);
+										}
+									}
+								}
+							}
 							if (tuple.Item1 != null && tuple.Item1 == "zeta_/" + config.region + "/content/itemDictionary.xml")
 							{
 								Console.WriteLine(tuple.Item1);
@@ -415,7 +461,6 @@ namespace RHOParser
 									XmlDocument doc = new XmlDocument();
 									doc.Load(stream);
 									XmlNodeList bodyParams = doc.GetElementsByTagName("kartBody");
-									KartExcData.dictionary = new List<short>();
 									if (bodyParams.Count > 0)
 									{
 										foreach (XmlNode xn in bodyParams)

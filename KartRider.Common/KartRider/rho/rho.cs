@@ -309,7 +309,6 @@ namespace RHOParser
 						XmlDocument trackLocale = new XmlDocument();
 						trackLocale.Load(stream);
 						XmlNodeList trackParams = trackLocale.GetElementsByTagName("track");
-						KartExcData.track = new Dictionary<uint, string>();
 						if (trackParams.Count > 0)
 						{
 							foreach (XmlNode xn in trackParams)
@@ -336,7 +335,6 @@ namespace RHOParser
 						XmlDocument trackLocale = new XmlDocument();
 						trackLocale.Load(stream);
 						XmlNodeList trackParams = trackLocale.GetElementsByTagName("track");
-						KartExcData.track = new Dictionary<uint, string>();
 						if (trackParams.Count > 0)
 						{
 							foreach (XmlNode xn in trackParams)
