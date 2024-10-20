@@ -25,20 +25,6 @@ namespace RHOParser
 
         private static void Dump(string input)
         {
-            CountryCode regionCode = CountryCode.None;
-            if (config.region == "kr")
-            {
-                regionCode = CountryCode.KR;
-            }
-            else if (config.region == "cn")
-            {
-                regionCode = CountryCode.CN;
-            }
-            else if (config.region == "tw")
-            {
-                regionCode = CountryCode.TW;
-            }
-            //packFolderManager.OpenSingleFile(input, regionCode);
             packFolderManager.OpenDataFolder(input);
             Queue<PackFolderInfo> packFolderInfoQueue = new Queue<PackFolderInfo>();
             packFolderInfoQueue.Enqueue(packFolderManager.GetRootFolder());
@@ -548,24 +534,6 @@ namespace RHOParser
                     PackageData packageData = new PackageData();
                     packageData.Init(iPacket);
                     this.SubPackages.Add(packageData);
-                }
-            }
-        }
-
-        public static void OpenRhoFile(string args)
-        {
-            foreach (string file in Directory.GetFiles(args))
-            {
-                if (file.EndsWith(".rho") || file.EndsWith(".rho5"))
-                {
-                    FileInfo fileInfo = new FileInfo(file);
-                    try
-                    {
-                        Dump(fileInfo.FullName);
-                    }
-                    catch
-                    {
-                    }
                 }
             }
         }
