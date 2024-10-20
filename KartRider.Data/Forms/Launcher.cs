@@ -177,6 +177,7 @@ namespace KartRider
 			{
 				(new Thread(() =>
 				{
+					KartRhoFile.packFolderManager.Reset();
 					Start_Button.Enabled = true;
 					Launcher.GetKart = false;
 					Launcher.Options = false;
