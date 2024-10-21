@@ -39,12 +39,12 @@ namespace KartRider
 				Socket clientSocket = RouterListener.Listener.EndAcceptSocket(ar);
 				RouterListener.ForceConnect = RouterListener.sIP;
 				RouterListener.MySession = new SessionGroup(clientSocket, null);
-				//System.Threading.Thread.Sleep(3000);
 				IPEndPoint clientEndPoint = clientSocket.RemoteEndPoint as IPEndPoint;
 				if (clientEndPoint != null)
 				{
 					RouterListener.client = clientEndPoint.Address;
 					Console.WriteLine("Client IP: " + RouterListener.client.ToString());
+					System.Threading.Thread.Sleep(3000);
 					GameSupport.PcFirstMessage();
 				}
 				else
